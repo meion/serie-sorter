@@ -1,4 +1,3 @@
-const path = require('path');
 const fetch = window.fetch;
 export async function fetch_get(url) {
     let response = await fetch(url)
@@ -7,50 +6,57 @@ export async function fetch_get(url) {
   }
 export default class TvDB{
     constructor(){
-        this.test();
+        this.state = {
+            token: "",
+            header: ""
+        }
+        this.fetch_token("https://api.thetvdb.com/login", "HAHTDKZQ5FWWZ8VR","lucasdahlgrenabn","25T9UNL5DY3FIRXP");
     }
-    test(){
-        var data = {
-            apikey:"HAHTDKZQ5FWWZ8VR",
-            userkey:"25T9UNL5DY3FIRXP",
-            username:"lucasdahlgrenabn"
+    async search_for_serie(name, imdbId, zap2itID){
+        let url = "https://api.thetvdb.com/search/series?name=" + name.replace(/\s/g, "+");
+        return new Promise((resolve, reject) => {
+            fetch(url, {
+                method:'GET',
+                headers:{
+                    'Authorization': `Bearer ${this.state.token}`,
+                    'Accept-Language': 'en'
+                }
+            })
+                .then(res => res.json())
+                .then(val => {
+                    resolve(val);
+                })
+                .catch(err => reject(err))
+        })
+    }
+    async fetch_token(url, apikey, username, userkey){
+        let data = {
+            "apikey":apikey,
+            "userkey":userkey,
+            "username":username
         };
-        fetch('https://api.thetvdb.com/login', {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(res => res.json())
-        .then(json => {
-            console.log(json);
-        })
+        return await this.POST_request(data, url)
+            .then(val => {
+                this.state.token = val.token;
+                this.state.header = `Bearer ${val.token}`;
+            })
+            .catch(err => console.err(err))
     }
-    get_token(url, apikey, username, userkey){
-        url = path.join(url, 'login');
+    POST_request(body, url, authString=null){
         return new Promise((resolve, reject) =>{
-            let options = this.construct_request(
-                "POST",
-                "no-cors",
-                "no-cache",
-                null,
-                // "include",
-                "application/json",
-                // "follow",
-                null,
-                // "no-referrer",
-                null,
-                {
-                    "apikey":apikey,
-                    "userkey":userkey,
-                    "username":username
-                });
-            this.make_request(url, options)
-                .then((json) =>{
+            console.log(authString)
+            fetch(url, {
+                method:"POST",
+                headers: {
+                    Authorization: authString,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)})
+                .then(res => res.json())
+                .then(json => {
                     console.log(json)
-                    resolve(json)
+                    resolve(json);
                 })
                 .catch(err => reject(err))
         })

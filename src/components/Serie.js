@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Style from './style.css';
 import Season from './Season';
-import {getEpisodes} from '../tools/Utils'
+import {getEpisodes, parseSerieSearch} from '../tools/Utils'
 import {fetch_get} from '../tools/RequestService';
 import TvDB from '../tools/RequestService';
 export default class Serie extends Component{
@@ -42,6 +42,21 @@ export default class Serie extends Component{
                 arr.push(<Season key={this.props.name+element.season+element.name} name={this.props.name} season={element.season} episodes={getEpisodes(this.props.name, element.season, content)}/>);
             }
         });
+        this.props.client.search_for_serie(this.props.name, null, null)
+            .then(val => {
+                if(val.data === undefined){
+                    console.log(this.props.name)
+                }else{
+                    let goodenough = parseSerieSearch(val.data, this.props.name);
+                    if(goodenough.id){
+                        this.setState({
+                            id: goodenough.id
+                        });
+                    }
+                    console.log(goodenough)
+                }
+            })
+            .catch(err => console.log(err))
         return arr;
     }
     componentDidMount(){
