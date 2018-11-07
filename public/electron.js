@@ -1,5 +1,6 @@
 const { app, BrowserWindow, shell, ipcMain, Menu, TouchBar } = require('electron');
 const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
+
 // import setimmediate from 'setimmediate';
 
 const path = require('path');

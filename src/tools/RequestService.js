@@ -1,4 +1,5 @@
 const fetch = window.fetch;
+const fs = window.fs;
 export async function fetch_get(url) {
     let response = await fetch(url)
     if (response.ok) return await response.json()
@@ -12,22 +13,38 @@ export default class TvDB{
         }
         this.fetch_token("https://api.thetvdb.com/login", "HAHTDKZQ5FWWZ8VR","lucasdahlgrenabn","25T9UNL5DY3FIRXP");
     }
+    async fetch_images(id){
+        let url = `https://api.thetvdb.com/series/${id}/images//query?keyType=poster`
+        return new Promise((resolve, reject) => {
+            this.fetch_get_url(url)
+                .then(val => {
+                    // var file = fs.createWriteStream("externalFiles/file.jpg");
+                    // val.pipe(file);
+                    // cont dest = fs.createWriteStream('./')
+                    // TODO - preload path
+                    // const dest = fs.createWriteStream(`./${val.data[0].thumbnail}`);
+                    // val.body.pipe(dest);
+                    console.log(val.data);
+                    resolve(val)
+                })
+                .catch(err => reject(err))
+        }
+        );}
     async search_for_serie(name, imdbId, zap2itID){
         let url = "https://api.thetvdb.com/search/series?name=" + name.replace(/\s/g, "+");
         return new Promise((resolve, reject) => {
-            fetch(url, {
-                method:'GET',
-                headers:{
-                    'Authorization': `Bearer ${this.state.token}`,
-                    'Accept-Language': 'en'
-                }
-            })
-                .then(res => res.json())
-                .then(val => {
-                    resolve(val);
-                })
+            this.fetch_get_url(url)
+                .then(val => resolve(val))
                 .catch(err => reject(err))
-        })
+        });}
+    async fetch_get_url(url){
+        return fetch(url, {
+            method:'GET',
+            headers:{
+                'Authorization': `Bearer ${this.state.token}`,
+                'Accept-Language': 'en'
+            }})
+            .then(res => res.json())
     }
     async fetch_token(url, apikey, username, userkey){
         let data = {
@@ -44,7 +61,6 @@ export default class TvDB{
     }
     POST_request(body, url, authString=null){
         return new Promise((resolve, reject) =>{
-            console.log(authString)
             fetch(url, {
                 method:"POST",
                 headers: {

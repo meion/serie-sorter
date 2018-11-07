@@ -9,6 +9,7 @@ export default class Serie extends Component{
         super(props);
         this.state = {
             name:this.props.name,
+            id:"",
             seasons:this.AddSesons(this.props.content).sort((a,b) => {
                 const A = a.props.season
                 const B = b.props.season
@@ -16,6 +17,7 @@ export default class Serie extends Component{
             }),
             image:{
                 fetched: false,
+                real:false,
                 imageURL:""
             },
             show:true
@@ -24,6 +26,7 @@ export default class Serie extends Component{
         this.imgRef = React.createRef();
         this.AddSesons = this.AddSesons.bind(this);
         this.includes = this.includes.bind(this);
+        this.addSerieToken = this.addSerieToken.bind(this);
     }
     includes(newSeason, arr){
         let exists = false;
@@ -42,6 +45,10 @@ export default class Serie extends Component{
                 arr.push(<Season key={this.props.name+element.season+element.name} name={this.props.name} season={element.season} episodes={getEpisodes(this.props.name, element.season, content)}/>);
             }
         });
+        this.addSerieToken();
+        return arr;
+    }
+    addSerieToken(){
         this.props.client.search_for_serie(this.props.name, null, null)
             .then(val => {
                 if(val.data === undefined){
@@ -50,17 +57,41 @@ export default class Serie extends Component{
                     let goodenough = parseSerieSearch(val.data, this.props.name);
                     if(goodenough.id){
                         this.setState({
+                            image:{
+                                ...this.state.image,
+                                real:true,
+                                imageURL:"https://www.thetvdb.com/banners/posters/73141-2.jpg"
+                            },
                             id: goodenough.id
+                        }, () => {
+                            console.log(this.state)
+                            this.forceUpdate();
                         });
                     }
-                    console.log(goodenough)
                 }
             })
             .catch(err => console.log(err))
-        return arr;
     }
-    componentDidMount(){
-        
+    componentDidUpdate(prevProps, prevState){
+        if(this.state.id !== prevState.id && !this.state.image.real){
+            console.log('hello')
+            this.props.client.fetch_images(this.state.id)
+                .then(val => {
+                    console.log('hello2')
+                    console.log(val.data[0]);
+                    // console.log(val)
+                    this.setState({
+                        image:{
+                            ...this.state.image,
+                            imageURL2:val.data[0].thumbnail,
+                            real:true
+                        }
+                    })
+                })
+                .catch(err => console.err)
+        }
+    }
+    componentDidMount(){  
         fetch_get("http://www.splashbase.co/api/v1/images/1").then((value) =>{
             // console.log(value);
             this.setState({
@@ -85,6 +116,7 @@ export default class Serie extends Component{
                 <div className="img-container">
                     <h2 className="top-left" onClick={() => this.setState({show: !this.state.show})}>{this.state.name}</h2>
                     {this.state.image.fetched ? <img src={this.state.image.imageURL} ref={this.imgRef}alt="never gonna show hopefully"/> : null}
+                    {this.state.image.real ? <img src={this.state.image.imageURL2} ref={this.imgRef}alt="never gonna show hopefully"/> : null}
                     <div className="top-right">
                         <ul>
                             {this.state.show ? this.state.seasons : null}
