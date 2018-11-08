@@ -26,9 +26,9 @@ export default class SerieSummary extends Component{
                 arr.push(
                     new Promise((resolve, reject) => {
                         this.state.client.search_for_serie(name).then(val => {
-                            if(val.data){
-                                let banner = val.data[0].thumbnail;
-                                resolve(<Serie banner={banner} client={this.state.client} key={name} name={name} content={getContent(items, name)}/>)
+                            if(val.images.data){
+                                let banner = val.images.data[0].thumbnail;
+                                resolve(<Serie id={val.id} banner={banner} client={this.state.client} key={name} name={name} content={getContent(items, name)}/>)
                             }
                             resolve(val)
                         })
@@ -51,16 +51,11 @@ export default class SerieSummary extends Component{
                             const B = b.props.name
                             return A > B ? 1 : B > A ? -1 : 0;
                         }),
-                        sorted:true
-                    })
+                    }, () => this.setState({sorted:true}))
                 }
             })
         }
     }
-    // sortSeries(arr){
-    //     return  
-        
-    // }
     componentDidMount(){
         this.setState({mounted:true})
     }
@@ -72,9 +67,6 @@ export default class SerieSummary extends Component{
                 showing: true
             }, () => this.forceUpdate());
         }
-        // else if(this.state.series.length > 0 && !this.state.sorted){
-        //     this.sortSeries();
-        // }
     }
     render(){
         return(
@@ -82,7 +74,7 @@ export default class SerieSummary extends Component{
                 <div className="src-struct">
                     <h2 className="heading-src">Series structure</h2>
                     <div className="summary-struct">
-                        {this.state.sorted ? this.state.series.map(value => value): null}
+                        {this.state.sorted ? this.state.series.map(value => value): (!this.state.sorted && this.state.series.length > 0) ? <div> Loading series....</div> : null}
                     </div>
                 </div>
             </React.Fragment>

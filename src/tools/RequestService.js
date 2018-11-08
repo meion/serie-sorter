@@ -38,7 +38,10 @@ export default class TvDB{
             // we found a serie.
             likelySerie = parseSerieSearch(resp.data, name);
         }
-        return await this.fetch_images(likelySerie.id);
+        return {
+            images: await this.fetch_images(likelySerie.id),
+            id: likelySerie.id
+        }
     }
     async search_for_serie_int(name, imdbId=null, zap2itID=null){
         let url = "https://api.thetvdb.com/search/series?name=" + name.replace(/\s/g, "+");

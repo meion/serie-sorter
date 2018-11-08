@@ -38,7 +38,7 @@ export default class Serie extends Component{
         content.forEach(element => {
             if(element === undefined) return;
             if(!this.includes(element.season, arr)){
-                arr.push(<Season key={this.props.name+element.season+element.name} name={this.props.name} season={element.season} episodes={getEpisodes(this.props.name, element.season, content)}/>);
+                arr.push(<Season id={this.props.id} key={this.props.name+element.season+element.name} name={this.props.name} season={element.season} episodes={getEpisodes(this.props.name, element.season, content)}/>);
             }
         });
         return arr;
