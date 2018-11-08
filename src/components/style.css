@@ -24,6 +24,66 @@
     background: white;
     color:black!important;
 }
+.cursor-default:hover{
+    cursor: default;
+}
+.Settings ul{
+    list-style-type: none;
+}
+.Settings li{
+    color:black;
+}
+.Settings:active .src-struct{
+    overflow: hidden;
+}
+.settings-btn{
+    background: lavenderblush;
+    border-radius: 20px;
+    height: 30px;
+}
+.episode-desc{
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    
+    /* Position the tooltip text - see examples below! */
+    width: 400px;
+    bottom: 80%;
+    left: 50%;
+    margin-left: -200px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+.episode-name{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+.episode-name:first-child span{
+    margin-right: auto;
+    padding-right: 10px;
+}
+.settings-help{
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    
+    /* Position the tooltip text - see examples below! */
+    /* width: 400px;
+    bottom: 78%;
+    left: 20%; 
+    margin-left: -200px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    /* position: absolute; */
+    top: -5px;
+    right: 105%; 
+    z-index: 1; 
+}
 .serie-desc{
     visibility: hidden;
     background-color: black;
@@ -40,11 +100,19 @@
     position: absolute;
     z-index: 1;
 }
-.serie-desc-head:hover .serie-desc{
+.serie-desc-head:hover .serie-desc, .episode-desc-head:hover .episode-desc, .settings-help-head:hover .settings-help{
     visibility: visible;
 }
 .season-episodes{
     background: black;
+    display: flex;
+    flex-flow: column wrap;
+    min-width: 150px;
+    /* justify-items: space-evenly; */
+}
+.episode-struct{
+    display: flex;
+    justify-content: space-around;
 }
 img{
     /* height: 200px;*/

@@ -30,19 +30,33 @@ export default class TvDB{
                 .catch(err => reject(err))
         }
         );}
-    async search_for_serie(name, imdbId=null, zap2itID=null){
-        let url = "https://api.thetvdb.com/search/series?name=" + name.replace(/\s/g, "+");
+    async fetch_episode(id,season,episode_number){
+        let url = `https://api.thetvdb.com/series/${id}/episodes/query?airedSeason=${season}&airedEpisode=${episode_number}`;
+        return await this.fetch_get_url(url);
+    }
+    async search_for_serie(name=null, imdbId=null, zap2itID=null){
+        let url = ""
+        if(imdbId){
+            url = "https://api.thetvdb.com/search/series?imdbId=" + imdbId;
+        }else{
+            url = "https://api.thetvdb.com/search/series?name=" + name.replace(/\s/g, "+");
+        }
         let resp = await this.fetch_get_url(url);
         let likelySerie = {id:218401} //random fallback id
-        if(resp.data){
-            // we found a serie.
+        if(resp.data && name){
             likelySerie = parseSerieSearch(resp.data, name);
+        }else if(resp.data && imdbId){
+            //this is supposedly a definitive match
+            likelySerie = resp.data;
         }
-        return {
-            images: await this.fetch_images(likelySerie.id),
-            id: likelySerie.id,
-            desc: likelySerie.overview
+        if(name){
+            return {
+                images: await this.fetch_images(likelySerie.id),
+                id: likelySerie.id,
+                desc: likelySerie.overview
+            }
         }
+        return likelySerie;
     }
     async search_for_serie_int(name, imdbId=null, zap2itID=null){
         let url = "https://api.thetvdb.com/search/series?name=" + name.replace(/\s/g, "+");
