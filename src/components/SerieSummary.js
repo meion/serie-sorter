@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import Serie from './Serie';
-import {getExclusiveNames, getContent, parseSerieSearch} from '../tools/Utils'
+import {getExclusiveNames, getContent} from '../tools/Utils'
 import RequestService from '../tools/RequestService';
 
 
@@ -10,10 +10,13 @@ export default class SerieSummary extends Component{
         super(props)
         this.state = {
             series: [],
+            sorted:false,
+            showing:false,
             mounted:false,
             client: new RequestService()
         }
         this.getSeries = this.getSeries.bind(this);
+        this.sortSeries = this.getSeries.bind(this);
     }
     getSeries(items){
         let names = getExclusiveNames(items);
@@ -25,7 +28,6 @@ export default class SerieSummary extends Component{
                         this.state.client.search_for_serie(name).then(val => {
                             if(val.data){
                                 let banner = val.data[0].thumbnail;
-                                console.log('resolving')
                                 resolve(<Serie banner={banner} client={this.state.client} key={name} name={name} content={getContent(items, name)}/>)
                             }
                             resolve(val)
@@ -34,28 +36,45 @@ export default class SerieSummary extends Component{
                 );
             }
         }
-        return Promise.all(arr);
+        return arr;
     }
-    setSeries(){
+    async setSeries(){
         if(this.props.items.length > 0){
-            this.getSeries(this.props.items)
-                .then(val => {
+            let arr = this.getSeries(this.props.items);
+            arr.forEach(async (item) => {
+                let res = await item;
+                if(res.key !== undefined){
                     this.setState({
-                        series: val.filter((val) => val.key !== undefined)
+                        series: [...this.state.series, res].sort((a,b) => {
+                            console.log(a)
+                            const A = a.props.name
+                            const B = b.props.name
+                            return A > B ? 1 : B > A ? -1 : 0;
+                        }),
+                        sorted:true
                     })
-                    console.log(val)
-                })
-                .catch(err => console.log(err))
+                }
+            })
         }
     }
+    // sortSeries(arr){
+    //     return  
+        
+    // }
     componentDidMount(){
         this.setState({mounted:true})
     }
     componentDidUpdate(){
         if(this.state.series.length === 0 && this.props.items.length > 0 && this.state.mounted){
-            console.log('hello')
             this.setSeries()
+        }else if(this.state.series.length > 0 && !this.state.showing && this.state.sorted){
+            this.setState({
+                showing: true
+            }, () => this.forceUpdate());
         }
+        // else if(this.state.series.length > 0 && !this.state.sorted){
+        //     this.sortSeries();
+        // }
     }
     render(){
         return(
@@ -63,7 +82,7 @@ export default class SerieSummary extends Component{
                 <div className="src-struct">
                     <h2 className="heading-src">Series structure</h2>
                     <div className="summary-struct">
-                        {this.state.series.map(value => value)}
+                        {this.state.sorted ? this.state.series.map(value => value): null}
                     </div>
                 </div>
             </React.Fragment>

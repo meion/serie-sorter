@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import Style from './style.css';
+import './style.css';
 import Season from './Season';
-import {getEpisodes, parseSerieSearch} from '../tools/Utils'
-import {fetch_get} from '../tools/RequestService';
-import TvDB from '../tools/RequestService';
+import {getEpisodes} from '../tools/Utils'
 export default class Serie extends Component{
     constructor(props){
         super(props);
@@ -16,15 +14,12 @@ export default class Serie extends Component{
                 return A > B ? 1 : B > A ? -1 : 0;
             }),
             image:{
-                fetched: false,
-                real:false,
-                imageURL:""
+                fetched: true,
+                imageURL:"https://www.thetvdb.com" + this.props.banner.replace(/_cache/g, "/banners")
             },
             show:true
         }
         // let test = new TvDB();
-        console.log(this.props.banner)
-        this.imgRef = React.createRef();
         this.AddSesons = this.AddSesons.bind(this);
         this.includes = this.includes.bind(this);
         
@@ -48,51 +43,23 @@ export default class Serie extends Component{
         });
         return arr;
     }
-    componentDidUpdate(prevProps, prevState){
-        if(this.state.id !== prevState.id && !this.state.image.real){
-            console.log('hello')
-            this.props.client.fetch_images(this.state.id)
-                .then(val => {
-                    console.log('hello2')
-                    console.log(val.data[0]);
-                    // console.log(val)
-                    this.setState({
-                        image:{
-                            ...this.state.image,
-                            imageURL2:val.data[0].thumbnail,
-                            real:true
-                        }
-                    })
-                })
-                .catch(err => console.err)
+    activateSeasons(){
+        var node = this.seasonRef.current;
+        console.log(node)
+        if(this.state.show){
+            node.style.class += ' active';
+        }else{
+            node.style.class = node.className.replace("active", '');
         }
-    }
-    componentDidMount(){  
-        fetch_get("http://www.splashbase.co/api/v1/images/1").then((value) =>{
-            // console.log(value);
-            this.setState({
-                image:{
-                    fetched:true,
-                    imageURL: value.url
-                }
-            }, () =>{
-                var node = this.imgRef.current;
-                node.style.width = "100%";
-                // assume something like 
-                // console.log(Math.round(node.height/10)*10)
-                // console.log(Math.round(node.width/10)*10)
-            })
-        }).catch((err) => {
-            console.error(err)
-        });
+        this.setState({show: !this.state.show});
+
     }
     render(){
         return(
             <div className="serie-struct">
                 <div className="img-container">
-                    <h2 className="top-left" onClick={() => this.setState({show: !this.state.show})}>{this.state.name}</h2>
-                    {this.state.image.fetched ? <img src={this.state.image.imageURL} ref={this.imgRef}alt="never gonna show hopefully"/> : null}
-                    {this.state.image.real ? <img src={this.state.image.imageURL2} ref={this.imgRef}alt="never gonna show hopefully"/> : null}
+                    <h2 className="top-left" onClick={() => {this.setState({show : !this.state.show})}}>{this.state.name}</h2>
+                    <img src={this.state.image.imageURL} alt="never gonna show hopefully"/>
                     <div className="top-right">
                         <ul>
                             {this.state.show ? this.state.seasons : null}

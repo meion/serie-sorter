@@ -44,7 +44,7 @@ export default class Season extends Component{
         return(
             <li>
                 <h3 onClick={this.handleShow}>{this.state.season}</h3>
-                {this.state.show ? <ul>
+                {this.state.show ? <ul className="season-episodes">
                     {this.state.episodes.map((episode) =>{
                         if(episode !== undefined){
                             return (<Episode key={episode.name+episode.season+episode.episode} number={episode.episode} season={episode.season} name={episode.name} src={episode.src} dest={episode.dest} />);

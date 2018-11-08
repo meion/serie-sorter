@@ -1,6 +1,5 @@
 import {parseSerieSearch} from './Utils';
 const fetch = window.fetch;
-const fs = window.fs;
 export async function fetch_get(url) {
     let response = await fetch(url)
     if (response.ok) return await response.json()
@@ -35,7 +34,6 @@ export default class TvDB{
         let url = "https://api.thetvdb.com/search/series?name=" + name.replace(/\s/g, "+");
         let resp = await this.fetch_get_url(url);
         let likelySerie = {id:218401} //random fallback id
-        let banner;
         if(resp.data){
             // we found a serie.
             likelySerie = parseSerieSearch(resp.data, name);
