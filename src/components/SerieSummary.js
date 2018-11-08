@@ -28,7 +28,7 @@ export default class SerieSummary extends Component{
                         this.state.client.search_for_serie(name).then(val => {
                             if(val.images.data){
                                 let banner = val.images.data[0].thumbnail;
-                                resolve(<Serie id={val.id} banner={banner} client={this.state.client} key={name} name={name} content={getContent(items, name)}/>)
+                                resolve(<Serie desc={val.desc}id={val.id} banner={banner} client={this.state.client} key={name} name={name} content={getContent(items, name)}/>)
                             }
                             resolve(val)
                         })
@@ -41,19 +41,19 @@ export default class SerieSummary extends Component{
     async setSeries(){
         if(this.props.items.length > 0){
             let arr = this.getSeries(this.props.items);
-            arr.forEach(async (item) => {
-                let res = await item;
-                if(res.key !== undefined){
-                    this.setState({
-                        series: [...this.state.series, res].sort((a,b) => {
-                            console.log(a)
-                            const A = a.props.name
-                            const B = b.props.name
-                            return A > B ? 1 : B > A ? -1 : 0;
-                        }),
-                    }, () => this.setState({sorted:true}))
-                }
-            })
+            for(let item of arr){
+                item.then(val =>{
+                    if(val.key !== undefined){
+                        this.setState({
+                            series: [...this.state.series, val].sort((a,b) => {
+                                const A = a.props.name
+                                const B = b.props.name
+                                return A > B ? 1 : B > A ? -1 : 0;
+                            }),
+                        }, () => this.setState({sorted:true}))
+                    }
+                })
+            }
         }
     }
     componentDidMount(){

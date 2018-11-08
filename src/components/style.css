@@ -3,6 +3,46 @@
     --text-area-height: 40px;
     --text-area-width: 15%;
 }
+.serie-desc-head:hover{
+    color: gray
+}
+.clickable:hover{
+    cursor: pointer;
+}
+.serie-desc-head{
+    position: relative!important;
+    display: inline-block!important;
+    font-size: 1em;
+}
+.Settings{
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    position: absolute!important;
+    top:0;
+    left:0;
+    background: white;
+    color:black!important;
+}
+.serie-desc{
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    
+    /* Position the tooltip text - see examples below! */
+    width: 400px;
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -200px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+.serie-desc-head:hover .serie-desc{
+    visibility: visible;
+}
 .season-episodes{
     background: black;
 }
@@ -31,6 +71,11 @@ ul li ul:active{
     text-align: initial;
     color: white;
 }
+.bottom-left{
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+}
 .top-right{
     position: absolute;
     top: 8px;
@@ -39,6 +84,7 @@ ul li ul:active{
 .top-left{
     position: absolute;
     top: -15px;
+    left: 5px;
 }
 /*main window*/
 .summary-struct{

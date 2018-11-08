@@ -40,7 +40,8 @@ export default class TvDB{
         }
         return {
             images: await this.fetch_images(likelySerie.id),
-            id: likelySerie.id
+            id: likelySerie.id,
+            desc: likelySerie.overview
         }
     }
     async search_for_serie_int(name, imdbId=null, zap2itID=null){

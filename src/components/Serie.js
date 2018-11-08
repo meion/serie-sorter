@@ -17,11 +17,15 @@ export default class Serie extends Component{
                 fetched: true,
                 imageURL:"https://www.thetvdb.com" + this.props.banner.replace(/_cache/g, "/banners")
             },
-            show:true
+            show:true,
+            settings:{
+                active:false
+            }
         }
         // let test = new TvDB();
         this.AddSesons = this.AddSesons.bind(this);
         this.includes = this.includes.bind(this);
+        this.Settings = this.Settings.bind(this)
         
     }
     includes(newSeason, arr){
@@ -43,30 +47,46 @@ export default class Serie extends Component{
         });
         return arr;
     }
-    activateSeasons(){
-        var node = this.seasonRef.current;
-        console.log(node)
-        if(this.state.show){
-            node.style.class += ' active';
-        }else{
-            node.style.class = node.className.replace("active", '');
-        }
-        this.setState({show: !this.state.show});
+    Settings(){
+        this.setState({
+            settings: {...this.state.settings, active:!this.state.settings.active}
+        })
+        // var node = this.seasonRef.current;
+        // console.log(node)
+        // if(this.state.show){
+        //     node.style.class += ' active';
+        // }else{
+        //     node.style.class = node.className.replace("active", '');
+        // }
+        // this.setState({show: !this.state.show});
 
     }
     render(){
         return(
-            <div className="serie-struct">
-                <div className="img-container">
-                    <h2 className="top-left" onClick={() => {this.setState({show : !this.state.show})}}>{this.state.name}</h2>
-                    <img src={this.state.image.imageURL} alt="never gonna show hopefully"/>
-                    <div className="top-right">
-                        <ul>
-                            {this.state.show ? this.state.seasons : null}
-                        </ul>
+            <React.Fragment>
+                <div className="serie-struct">
+                    <div className="img-container">
+                        <h2 className="top-left clickable" onClick={this.Settings}>{this.state.image.imageURL ? "\u2699" : this.state.name}</h2>
+                        <img src={this.state.image.imageURL} alt="never gonna show hopefully"/>
+                        <div className="top-right">
+                            <ul>
+                                {this.state.show ? this.state.seasons : null}
+                            </ul>
+                        </div>
+                        <div className="bottom-left">
+                            <h2 className="serie-desc-head">?
+                                <span className="serie-desc">{this.props.desc}</span>
+                            </h2>
+                        </div>
                     </div>
                 </div>
-            </div>
+                {this.state.settings.active ? 
+                <div className="Settings img-container">
+                    <h2 onClick={this.Settings}className="top-right clickable"> X </h2>
+                    <span>hejsan</span>
+                </div> 
+                : null}
+            </React.Fragment>
         )
     }
 }
