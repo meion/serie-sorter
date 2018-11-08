@@ -23,10 +23,11 @@ export default class Serie extends Component{
             show:true
         }
         // let test = new TvDB();
+        console.log(this.props.banner)
         this.imgRef = React.createRef();
         this.AddSesons = this.AddSesons.bind(this);
         this.includes = this.includes.bind(this);
-        this.addSerieToken = this.addSerieToken.bind(this);
+        
     }
     includes(newSeason, arr){
         let exists = false;
@@ -45,32 +46,7 @@ export default class Serie extends Component{
                 arr.push(<Season key={this.props.name+element.season+element.name} name={this.props.name} season={element.season} episodes={getEpisodes(this.props.name, element.season, content)}/>);
             }
         });
-        this.addSerieToken();
         return arr;
-    }
-    addSerieToken(){
-        this.props.client.search_for_serie(this.props.name, null, null)
-            .then(val => {
-                if(val.data === undefined){
-                    console.log(this.props.name)
-                }else{
-                    let goodenough = parseSerieSearch(val.data, this.props.name);
-                    if(goodenough.id){
-                        this.setState({
-                            image:{
-                                ...this.state.image,
-                                real:true,
-                                imageURL:"https://www.thetvdb.com/banners/posters/73141-2.jpg"
-                            },
-                            id: goodenough.id
-                        }, () => {
-                            console.log(this.state)
-                            this.forceUpdate();
-                        });
-                    }
-                }
-            })
-            .catch(err => console.log(err))
     }
     componentDidUpdate(prevProps, prevState){
         if(this.state.id !== prevState.id && !this.state.image.real){

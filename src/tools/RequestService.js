@@ -1,3 +1,4 @@
+import {parseSerieSearch} from './Utils';
 const fetch = window.fetch;
 const fs = window.fs;
 export async function fetch_get(url) {
@@ -24,13 +25,24 @@ export default class TvDB{
                     // TODO - preload path
                     // const dest = fs.createWriteStream(`./${val.data[0].thumbnail}`);
                     // val.body.pipe(dest);
-                    console.log(val.data);
+                    // console.log(val.data);
                     resolve(val)
                 })
                 .catch(err => reject(err))
         }
         );}
-    async search_for_serie(name, imdbId, zap2itID){
+    async search_for_serie(name, imdbId=null, zap2itID=null){
+        let url = "https://api.thetvdb.com/search/series?name=" + name.replace(/\s/g, "+");
+        let resp = await this.fetch_get_url(url);
+        let likelySerie = {id:218401} //random fallback id
+        let banner;
+        if(resp.data){
+            // we found a serie.
+            likelySerie = parseSerieSearch(resp.data, name);
+        }
+        return await this.fetch_images(likelySerie.id);
+    }
+    async search_for_serie_int(name, imdbId=null, zap2itID=null){
         let url = "https://api.thetvdb.com/search/series?name=" + name.replace(/\s/g, "+");
         return new Promise((resolve, reject) => {
             this.fetch_get_url(url)

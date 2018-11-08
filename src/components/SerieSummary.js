@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import Serie from './Serie';
-import {getExclusiveNames, getContent} from '../tools/Utils'
+import {getExclusiveNames, getContent, parseSerieSearch} from '../tools/Utils'
 import RequestService from '../tools/RequestService';
 
 
@@ -19,33 +19,42 @@ export default class SerieSummary extends Component{
         let names = getExclusiveNames(items);
         let arr = [];
         for(let name of names){
-            if(name !== undefined){
-                arr.push(<Serie client={this.state.client} key={name} name={name} content={getContent(items, name)}/>);
+            if(name){
+                arr.push(
+                    new Promise((resolve, reject) => {
+                        this.state.client.search_for_serie(name).then(val => {
+                            if(val.data){
+                                let banner = val.data[0].thumbnail;
+                                console.log('resolving')
+                                resolve(<Serie banner={banner} client={this.state.client} key={name} name={name} content={getContent(items, name)}/>)
+                            }
+                            resolve(val)
+                        })
+                    })
+                );
             }
         }
-        // this.state.series = arr;
-        this.setState({series:arr})
+        return Promise.all(arr);
     }
-    getSeriesPromise(items){
-        return new Promise((resolve, reject) =>{
-            if(this.props.items.length > 0){
-                resolve(this.getSeries(this.props.items))
-            }else{
-                reject(this.props.items)
-            }
-        })
+    setSeries(){
+        if(this.props.items.length > 0){
+            this.getSeries(this.props.items)
+                .then(val => {
+                    this.setState({
+                        series: val.filter((val) => val.key !== undefined)
+                    })
+                    console.log(val)
+                })
+                .catch(err => console.log(err))
+        }
     }
     componentDidMount(){
         this.setState({mounted:true})
     }
     componentDidUpdate(){
         if(this.state.series.length === 0 && this.props.items.length > 0 && this.state.mounted){
-            setTimeout(()=>this.forceUpdate(), 500);
-            this.getSeriesPromise(this.props.items)
-                .then(()=> this.forceUpdate())
-                .catch(() => {
-                    console.log('No series yet');
-                });
+            console.log('hello')
+            this.setSeries()
         }
     }
     render(){
