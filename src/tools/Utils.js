@@ -1,3 +1,5 @@
+import React from 'react';
+import Serie from '../components/Serie';
 const fs = window.fs;
 const path = require('path');
 
@@ -154,6 +156,26 @@ export function getEpisodes(name, season, content){
         return undefined;
     })
 }
+export function getSeries(items, client){
+        let names = getExclusiveNames(items);
+        let arr = [];
+        for(let name of names){
+            if(name){
+                arr.push(
+                    new Promise((resolve, reject) => {
+                        client.search_for_serie(name).then(val => {
+                            if(val.images.data){
+                                let banner = val.images.data[0].thumbnail;
+                                resolve(<Serie desc={val.desc}id={val.id} banner={banner} client={client} key={name} name={name} content={getContent(items, name)}/>)
+                            }
+                            resolve(val)
+                        })
+                    })
+                );
+            }
+        }
+        return arr;
+    }
 export function beutifyname(name, dest){
     let name_reg = /([\w(.| )]+?)(\.|\s|-)+?(S|s)([0-9]{1,})(E|e)([0-9]{1,})/;
     let match = name_reg.exec(name);

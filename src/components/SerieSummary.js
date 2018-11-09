@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
-import Serie from './Serie';
-import {getExclusiveNames, getContent} from '../tools/Utils'
+// import Serie from './Serie';
+import {getSeries} from '../tools/Utils'
 import RequestService from '../tools/RequestService';
 
 
@@ -15,36 +15,15 @@ export default class SerieSummary extends Component{
             mounted:false,
             client: new RequestService()
         }
-        this.getSeries = this.getSeries.bind(this);
-        this.sortSeries = this.getSeries.bind(this);
+
         this.changeID = this.changeID.bind(this);
     }
     changeID(id){
         console.log(id);
     }
-    getSeries(items){
-        let names = getExclusiveNames(items);
-        let arr = [];
-        for(let name of names){
-            if(name){
-                arr.push(
-                    new Promise((resolve, reject) => {
-                        this.state.client.search_for_serie(name).then(val => {
-                            if(val.images.data){
-                                let banner = val.images.data[0].thumbnail;
-                                resolve(<Serie desc={val.desc}id={val.id} banner={banner} client={this.state.client} key={name} name={name} content={getContent(items, name)}/>)
-                            }
-                            resolve(val)
-                        })
-                    })
-                );
-            }
-        }
-        return arr;
-    }
     async setSeries(){
         if(this.props.items.length > 0){
-            let arr = this.getSeries(this.props.items);
+            let arr = getSeries(this.props.items, this.state.client);
             for(let item of arr){
                 item.then(val =>{
                     if(val.key !== undefined){
