@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import './style.css';
-// import Serie from './Serie';
-import {getSeries} from '../tools/Utils'
-import RequestService from '../tools/RequestService';
-
 
 export default class SerieSummary extends Component{
     constructor(props){

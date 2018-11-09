@@ -3,7 +3,6 @@ import './style.css';
 import Season from './Season';
 import {getEpisodes} from '../tools/Utils'
 import Setting from './Setting';
-import { TvMaze } from '../tools/RequestService';
 export default class Serie extends Component{
     constructor(props){
         super(props);
@@ -71,7 +70,7 @@ export default class Serie extends Component{
                 })
             }
         })
-        window.scrollTo(0, this.state.settings.scrollPos);
+        // window.scrollTo(0, this.state.settings.scrollPos);
         this.setState({
             settings: {...this.state.settings, active:!this.state.settings.active, scrollPos:0}
         })
@@ -112,9 +111,9 @@ export default class Serie extends Component{
     Settings(){
         let scrollPos = window.scrollY;
         console.log(scrollPos);
-        window.scrollTo(0, 0);
+        // window.scrollTo(0, 0);
         this.setState({
-            settings: {...this.state.settings, active:!this.state.settings.active, scrollPos:scrollPos}
+            settings: {...this.state.settings, active:!this.state.settings.active, scrollPos: scrollPos}
         })
     }
     render(){
