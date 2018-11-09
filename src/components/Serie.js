@@ -3,6 +3,7 @@ import './style.css';
 import Season from './Season';
 import {getEpisodes} from '../tools/Utils'
 import Setting from './Setting';
+import { TvMaze } from '../tools/RequestService';
 export default class Serie extends Component{
     constructor(props){
         super(props);
@@ -22,7 +23,8 @@ export default class Serie extends Component{
             show:true,
             settings:{
                 active:false
-            }
+            },
+            tvMaze:{}
         }
         this.AddSesons = this.AddSesons.bind(this);
         this.includes = this.includes.bind(this);
@@ -53,6 +55,8 @@ export default class Serie extends Component{
                 arr.push(<Season client={this.props.client} id={id} key={this.props.name+element.season+element.name} name={name} season={element.season} episodes={getEpisodes(name, element.season, content)}/>);
             }
         });
+        // this.state.name = name;
+        // this.state.tvMaze = new TvMaze(name);
         return arr;
     }
     changeID(id){
@@ -87,6 +91,11 @@ export default class Serie extends Component{
                 }
             })
             .catch(err => console.log(err))
+    }
+    componentDidMount(){
+        this.setState({
+            // tvMaze: new TvMaze(this.state.name)
+        })
     }
     componentDidUpdate(prevProps, prevState){
         if(this.state.id !== prevState.id){

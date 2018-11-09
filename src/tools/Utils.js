@@ -157,7 +157,7 @@ export function getEpisodes(name, season, content){
     })
 }
 export function getSeries(items, client){
-        let names = getExclusiveNames(items);
+        let names = getExclusiveNames(items).filter(name => name!==undefined);
         let arr = [];
         for(let name of names){
             if(name){

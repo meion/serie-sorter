@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import InputItem from './InputItem';
 import SerieSummary from './SerieSummary';
 import './style.css';
-import {flatten, extractAllmkv} from '../tools/Utils';
+import {flatten, extractAllmkv, getSeries} from '../tools/Utils';
+import { BrowserRouter as Router, Route,Link } from "react-router-dom";
+import RequestService from '../tools/RequestService';
 // const fs = window.require('fs');
 // const path = require('path');
 
@@ -12,7 +14,9 @@ export default class Menu extends Component{
         super();
         this.state = {
             dest : "",
-            items: []
+            items: [],
+            series:[],
+            client: new RequestService()
         };
         this.src = React.createRef();
         this.setDir = this.setDir.bind(this);
@@ -35,29 +39,40 @@ export default class Menu extends Component{
             flatten(value[0]).then(v =>{
                 // console.log(v);
                 let parsedArray = extractAllmkv(v, this.state.dest);
-                this.setState({
-                    items: parsedArray.sort((a,b) =>{
-                        const A = a.name.toUpperCase();
-                        const B = b.name.toUpperCase();
-                        return A > B ? 1 : B > A ? -1 : 0;
+                let testitems = parsedArray.filter(val => val!==undefined);
+                let series =  getSeries(testitems, this.state.client);
+                for(let seriePromise of series){
+                    seriePromise.then(serie =>{
+                        if(serie.key !== undefined){
+                            this.setState({
+                                series:[...this.state.series, serie].sort((a,b) => {
+                                    const A = a.props.name
+                                    const B = b.props.name
+                                    return A > B ? 1 : B > A ? -1 : 0;
+                                })
+                            },() => console.log(this.state))
+                        }
                     })
-                })
-                console.log(`Time elapsed: ${(Date.now() - start)/1000}`)
+                }
             })
         }
     }
     render(){
-        return(
+        let Default = () => (
             <React.Fragment>
                 <div>Menu</div>
                 <div id="blocks">
-                <div id="src-containers">
-                    <InputItem label="Set src-folder" id="src" handleDirInfo={this.setDir}/>
-                    <InputItem label="Set dest-folder" id="dest" handleDirInfo={this.setDest}/>
+                    <div id="src-containers">
+                        <InputItem label="Set src-folder" id="src" handleDirInfo={this.setDir}/>
+                        <InputItem label="Set dest-folder" id="dest" handleDirInfo={this.setDest}/>
+                    </div>
                 </div>
-                <SerieSummary items={this.state.items}/>
-
-                </div>
+            </React.Fragment>
+        )
+        return(
+            <React.Fragment>
+                <Default />
+                <SerieSummary client={this.state.client} series={this.state.series}/>
             </React.Fragment>
         )
     }

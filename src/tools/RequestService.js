@@ -6,9 +6,19 @@ export async function fetch_get(url) {
     if (response.ok) return await response.json()
     throw new Error(response.status)
   }
-
-
-
+export class TvMaze{
+    constructor(name){
+        this.test(name)
+    }
+    test(name){
+        fetch_get(`http://api.tvmaze.com/search/shows?q=${name.replace(/\s/g, "+")}`).then(val => {
+            if(val){
+                let serie = val[0];
+                console.log(serie);
+            }
+        })
+    }
+}
 export default class TvDB{
     constructor(){
         this.state = {

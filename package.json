@@ -16,6 +16,7 @@
 		"react": "^16.6.0",
 		"react-dev-utils": "^6.1.1",
 		"react-dom": "^16.6.0",
+		"react-router-dom": "^4.3.1",
 		"setimmediate": "^1.0.5",
 		"wait-on": "^3.2.0"
 	},
