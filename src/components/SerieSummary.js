@@ -17,6 +17,10 @@ export default class SerieSummary extends Component{
         }
         this.getSeries = this.getSeries.bind(this);
         this.sortSeries = this.getSeries.bind(this);
+        this.changeID = this.changeID.bind(this);
+    }
+    changeID(id){
+        console.log(id);
     }
     getSeries(items){
         let names = getExclusiveNames(items);

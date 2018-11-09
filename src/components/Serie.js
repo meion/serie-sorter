@@ -10,7 +10,7 @@ export default class Serie extends Component{
             name:this.props.name,
             id:this.props.id,
             desc:this.props.desc,
-            seasons:this.AddSesons(this.props.content).sort((a,b) => {
+            seasons:this.AddSesons(this.props.content, this.props.id, this.props.name).sort((a,b) => {
                 const A = a.props.season
                 const B = b.props.season
                 return A > B ? 1 : B > A ? -1 : 0;
@@ -24,10 +24,10 @@ export default class Serie extends Component{
                 active:false
             }
         }
-        // let test = new TvDB();
         this.AddSesons = this.AddSesons.bind(this);
         this.includes = this.includes.bind(this);
         this.Settings = this.Settings.bind(this);
+        this.setNewImage = this.setNewImage.bind(this);
         this.changeID = this.changeID.bind(this);
         
     }
@@ -40,52 +40,72 @@ export default class Serie extends Component{
         })
         return exists;
     }
-    AddSesons(content){
+    AddSesons(content, id, name){
         let arr = []
+        if(this.state){
+            if(this.state.id === this.props.id){
+                console.log(this.state.id)
+            }
+        }
         content.forEach(element => {
             if(element === undefined) return;
             if(!this.includes(element.season, arr)){
-                arr.push(<Season client={this.props.client} id={this.props.id} key={this.props.name+element.season+element.name} name={this.props.name} season={element.season} episodes={getEpisodes(this.props.name, element.season, content)}/>);
+                arr.push(<Season client={this.props.client} id={id} key={this.props.name+element.season+element.name} name={name} season={element.season} episodes={getEpisodes(name, element.season, content)}/>);
             }
         });
         return arr;
     }
     changeID(id){
-        // TODO - get the new source for the IMG.
-        console.log(this.state.id)
         this.props.client.search_for_serie(null, id, null).then(val =>{
-            console.log(val);
             if(val[0].seriesName){
-                console.log(val[0].seriesName)
                 this.setState({
                     name:val[0].seriesName,
                     id:val[0].id,
                     desc:val[0].overview
-                }, () => this.setNewImage())
+                }, () => {
+                    this.setNewImage();
+                })
             }
+        })
+        window.scrollTo(0, this.state.settings.scrollPos);
+        this.setState({
+            settings: {...this.state.settings, active:!this.state.settings.active, scrollPos:0}
         })
     }
     setNewImage(){
         this.props.client.fetch_images(this.state.id)
             .then(val => {
-                console.log(val)
+                // console.log(val)
                 if(val.data){
                     let newImg = val.data[0].thumbnail;
-                    console.log(val.data[0])
                     this.setState({
                         image:{
                             ...this.state.image,
                             imageURL: "https://www.thetvdb.com" + newImg.replace(/_cache/g, "/banners")
                         }
-                    }, () => console.log(this.state))
+                    })
                 }
             })
             .catch(err => console.log(err))
     }
+    componentDidUpdate(prevProps, prevState){
+        if(this.state.id !== prevState.id){
+            let obj = this.props.content.map(val => {val.name = this.state.name; return val;});
+            this.setState({
+                seasons: this.AddSesons(obj, this.state.id, this.state.name).sort((a,b) => {
+                    const A = a.props.season
+                    const B = b.props.season
+                    return A > B ? 1 : B > A ? -1 : 0;
+                })
+            })
+        }
+    }
     Settings(){
+        let scrollPos = window.scrollY;
+        console.log(scrollPos);
         window.scrollTo(0, 0);
         this.setState({
-            settings: {...this.state.settings, active:!this.state.settings.active}
+            settings: {...this.state.settings, active:!this.state.settings.active, scrollPos:scrollPos}
         })
     }
     render(){

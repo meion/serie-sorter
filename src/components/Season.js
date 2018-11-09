@@ -9,6 +9,7 @@ export default class Season extends Component{
         this.state = {
             name: this.props.name,
             season: this.props.season,
+            id:this.props.id,
             episodes: this.removeDuplicate(this.props.episodes).sort((a,b) => {
                 const A = a.episode
                 const B = b.episode
@@ -37,6 +38,11 @@ export default class Season extends Component{
         });
         return parsedArr;
     }
+    // componentDidUpdate(prevProps, prevState){
+    //     if(this.state.id !== prevState.id){
+    //         console.log(this.state.id);
+    //     }
+    // }
     handleShow(){
         this.setState({show: !this.state.show})
     }
