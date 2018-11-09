@@ -14,6 +14,10 @@
     display: inline-block!important;
     font-size: 1em;
 }
+.calender-struct{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
 .Settings{
     opacity: 0.8;
     /* filter: blur(10px); */

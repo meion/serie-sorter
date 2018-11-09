@@ -12,6 +12,7 @@
 		"electron-is-dev": "^1.0.1",
 		"electron-publisher-s3": "^20.17.2",
 		"global": "^4.3.2",
+		"moment": "^2.22.2",
 		"node-fetch": "^2.2.1",
 		"react": "^16.6.0",
 		"react-dev-utils": "^6.1.1",

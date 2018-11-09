@@ -1,37 +1,34 @@
 import React, {Component} from 'react';
+import moment from 'moment';
 export default class Calendar extends Component{
-    constructor(props){
-        super(props);
-        let date = new Date();
-        this.state = {
-            date: new Date()
-        }
-        this.changeYear = this.changeYear.bind(this);
-        this.changeMonth = this.changeMonth.bind(this);
-        this.changeDay = this.changeDay.bind(this);
-    }
-    changeYear(val){
-        this.setState({
-            date: this.state.date.setYear(this.state.date.getFullYear() + val)
-        })
-    }
-    changeDay(val){
-        /* implement logic */
-    }
-    changeMonth(val){
-        let month = this.state.date.getMonth()
-        if(month > 1 && month < 12){
-            this.setState({
-                date: this.state.date.setMonth(this.state.date.getMonth() + val)
-            })
-        }else{
-            this.changeYear(val)
-        }
-    }
+    // constructor(props){
+    //     super(props);
+    // }
 
     render(){
+        let currentMonth = [...getRange(1, moment().endOf('month').date())]
+        let firstWeekDay = moment().startOf('month').day();
+
+        let lastDayLastMonth = moment().subtract(1, 'month').endOf('month').date();
+        
+        
+        let range = [
+            ...getRange(lastDayLastMonth - firstWeekDay + 1, lastDayLastMonth), 
+            ...currentMonth,
+            ...getRange(1, currentMonth.length % 7 - 1)
+        ];
         return(
-            <h2>Calendar</h2>
+            <React.Fragment>
+                <h2>Calendar</h2>
+                <div className="calender-struct">
+                    {range.map(val => <div>{val}</div>)}
+                </div>
+            </React.Fragment>
         )
+    }
+}
+function* getRange(start, end) {
+    for (let i = start; i <= end; i++) {
+        yield i;
     }
 }

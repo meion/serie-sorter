@@ -20,7 +20,7 @@ export default class Links extends Component{
     render(){
         return(
             <ul className="links">
-                {this.props.links.map((link, index) => <li key={link + index}><a className="list-click" onClick={this.handleClick}>{link}</a></li>)}
+                {this.props.links.map((link, index) => <li key={link + index}><button className="list-click" onClick={this.handleClick}>{link}</button></li>)}
             </ul>
         )
     }
