@@ -12,6 +12,7 @@ export default class SerieSummary extends Component{
             series: this.props.series,
             activated:false,
             showing:false,
+            sorted:true,
             mounted:false,
             client: this.props.client
         }

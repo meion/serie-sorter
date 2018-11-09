@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import InputItem from './InputItem';
 import SerieSummary from './SerieSummary';
 import './style.css';
+import Links from './Links';
 import {flatten, extractAllmkv, getSeries} from '../tools/Utils';
 import { BrowserRouter as Router, Route,Link } from "react-router-dom";
 import RequestService from '../tools/RequestService';
@@ -16,11 +17,19 @@ export default class Menu extends Component{
             dest : "",
             items: [],
             series:[],
-            client: new RequestService()
+            client: new RequestService(),
+            site:"Serie Overview" // default TODO - cleaner
         };
         this.src = React.createRef();
         this.setDir = this.setDir.bind(this);
         this.setDest = this.setDest.bind(this);
+        this.setLink = this.setLink.bind(this);
+    }
+    setLink(e){
+        let link = e.target.innerHTML;
+        this.setState({
+            site:link
+        })
     }
     setDest(id, value){
         this.setState({
@@ -60,7 +69,7 @@ export default class Menu extends Component{
     render(){
         let Default = () => (
             <React.Fragment>
-                <div>Menu</div>
+                <Links setLink={this.setLink} links={["Serie overview", "Calendar"]} />
                 <div id="blocks">
                     <div id="src-containers">
                         <InputItem label="Set src-folder" id="src" handleDirInfo={this.setDir}/>
@@ -69,10 +78,19 @@ export default class Menu extends Component{
                 </div>
             </React.Fragment>
         )
+        let Calendar = () => {
+            return(
+                <React.Fragment>
+                    <span>Calendar</span>
+                </React.Fragment>
+            )
+        }
         return(
             <React.Fragment>
                 <Default />
-                <SerieSummary client={this.state.client} series={this.state.series}/>
+                {/* implement store so that we wont have to refetch and mess everything up. */}
+                {this.state.site === 'Calendar'? <Calendar />: <SerieSummary client={this.state.client} series={this.state.series}/>}
+                {/* <SerieSummary client={this.state.client} series={this.state.series}/> */}
             </React.Fragment>
         )
     }

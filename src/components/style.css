@@ -66,6 +66,15 @@
     margin-right: auto;
     padding-right: 10px;
 }
+.links{
+    list-style-type: none;
+}
+.list-click:active{
+    font-weight: bold;
+}
+.links li{
+    color:black;
+}
 .settings-help{
     visibility: hidden;
     background-color: black;
