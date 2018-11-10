@@ -2,10 +2,43 @@ import {parseSerieSearch} from './Utils';
 import httpClient from './httpClient';
 const fetch = window.fetch;
 export async function fetch_get(url) {
+    // console.log(url)
     let response = await fetch(url)
     if (response.ok) return await response.json()
     throw new Error(response.status)
   }
+
+
+export class TheMovieDB{
+    constructor(){
+        this.state = {
+            token: '0e47c0710cd0f340979cb6fa69885fc4'
+        }
+        this.addtoken = this.addtoken.bind(this);
+        // console.log('heelo')
+        // fetch_get(this.addtoken("https://api.themoviedb.org/3/movie/550")).then(val => console.log(val)).catch(err => console.log(err))
+    }
+    async fetch_episode(id, season, episode){
+        let url = `${this.addtoken(`https://api.themoviedb.org/3/tv/${id}/season/${season}/episode/${episode}`)}`
+        try{
+            return await fetch_get(url);
+        }catch(err){
+            console.error(err)
+        }
+    }
+    async search_for_serie(name){
+        let url = `${this.addtoken("https://api.themoviedb.org/3/search/tv")}&query=${name}`
+        try{
+            return await fetch_get(url);
+        }catch(err){
+            console.log(err)
+        }
+    }
+    addtoken(url){
+        // console.log(url);
+        return url+`?api_key=0e47c0710cd0f340979cb6fa69885fc4`
+    }
+}
 export class TvMaze{
     constructor(name){
         this.test(name)
@@ -13,8 +46,8 @@ export class TvMaze{
     test(name){
         fetch_get(`http://api.tvmaze.com/search/shows?q=${name.replace(/\s/g, "+")}`).then(val => {
             if(val){
-                let serie = val[0];
-                console.log(serie);
+                // let serie = val[0];
+                // console.log(serie);
             }
         })
     }

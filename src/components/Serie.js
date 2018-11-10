@@ -6,6 +6,7 @@ import Setting from './Setting';
 export default class Serie extends Component{
     constructor(props){
         super(props);
+        console.log(props);
         this.state = {
             name:this.props.name,
             id:this.props.id,
@@ -17,7 +18,8 @@ export default class Serie extends Component{
             }),
             image:{
                 fetched: true,
-                imageURL:"https://www.thetvdb.com" + this.props.banner.replace(/_cache/g, "/banners")
+                imageURL: "https://image.tmdb.org/t/p/w500/" + this.props.banner
+                // imageURL:"https://www.thetvdb.com" + this.props.banner.replace(/_cache/g, "/banners")
             },
             show:true,
             settings:{
@@ -25,6 +27,7 @@ export default class Serie extends Component{
             },
             tvMaze:{}
         }
+        console.log(this.state);
         this.AddSesons = this.AddSesons.bind(this);
         this.includes = this.includes.bind(this);
         this.Settings = this.Settings.bind(this);

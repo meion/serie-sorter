@@ -4,8 +4,9 @@ import SerieSummary from './SerieSummary';
 import Calendar from './Calendar';
 import './style.css';
 import Links from './Links';
-import {flatten, extractAllmkv, getSeries} from '../tools/Utils';
-import RequestService from '../tools/RequestService';
+import {flatten, extractAllmkv, getContent} from '../tools/Utils';
+import {TheMovieDB} from '../tools/RequestService';
+import Serie from './Serie';
 // const fs = window.require('fs');
 // const path = require('path');
 
@@ -20,7 +21,7 @@ export default class Menu extends Component{
             loadedlength:0,
             series:[],
             done:false,
-            client: new RequestService(),
+            client: new TheMovieDB(),
             serieloaded:false,
             site:"Serie Overview" // default TODO - cleaner
         };
@@ -51,31 +52,56 @@ export default class Menu extends Component{
             flatten(value[0]).then(v =>{
                 // console.log(v);
                 let parsedArray = extractAllmkv(v, this.state.dest);
-                let testitems = parsedArray.filter(val => val!==undefined);
-                let series =  getSeries(testitems, this.state.client);
-                this.setState({
-                    serieslength:series.length
-                })
-                for(let seriePromise of series){
-                    seriePromise.then(serie =>{
-                        if(serie.key !== undefined){
+                let items = parsedArray.filter(val => val!==undefined);
+                
+                for(let item of items){
+                    this.state.client.search_for_serie(item.name).then(val => {
+                        if(val.results.length){
+                            let serie = val.results[0];
+                            // console.log(serie)
+                             let newSerie = <Serie 
+                                desc={serie.overview}
+                                id={serie.id} 
+                                banner={serie.poster_path} 
+                                client={this.state.client} 
+                                key={item.name} 
+                                name={item.name} 
+                                content={getContent(items, item.name)}
+                            />
                             this.setState({
-                                series:[...this.state.series, serie].sort((a,b) => {
-                                    const A = a.props.name
-                                    const B = b.props.name
-                                    return A > B ? 1 : B > A ? -1 : 0;
-                                })
-                            },() => console.log(this.state))
+                                series: [...this.state.series, newSerie],
+                            })
                         }
-                        this.setState({
-                            loadedlength:this.state.loadedlength+1
-                        })
-                        
                     })
+                    
                 }
-            })
-        }
-    }
+            })}}
+
+
+        //         let series =  getSeries(testitems, this.state.client);
+        //         this.setState({
+        //             serieslength:series.length
+        //         })
+        //         for(let seriePromise of series){
+        //             seriePromise.then(serie =>{
+        //                 if(serie.key !== undefined){
+        //                     this.setState({
+        //                         series:[...this.state.series, serie].sort((a,b) => {
+        //                             const A = a.props.name
+        //                             const B = b.props.name
+        //                             return A > B ? 1 : B > A ? -1 : 0;
+        //                         })
+        //                     },() => console.log(this.state))
+        //                 }
+        //                 this.setState({
+        //                     loadedlength:this.state.loadedlength+1
+        //                 })
+                        
+        //             })
+        //         }
+        //     })
+        // }
+    // }
     componentDidUpdate(prevProps, prevState){
         if(this.state){
             if(this.state.loadedlength === this.state.serieslength && !this.state.done){
@@ -102,7 +128,7 @@ export default class Menu extends Component{
                 <Links setLink={this.setLink} links={["Serie overview", "Calendar"]} />
                 <Default />
                 {/* implement store so that we wont have to refetch. */}
-                {this.state.site === 'Calendar'? <Calendar />: <SerieSummary preloaded={this.state.serieloaded} client={this.state.client} series={this.state.series}/>}
+                {this.state.site === 'Calendar'? <Calendar items={this.state.items} />: <SerieSummary preloaded={this.state.serieloaded} client={this.state.client} series={this.state.series}/>}
                 {/* <SerieSummary client={this.state.client} series={this.state.series}/> */}
             </React.Fragment>
         )

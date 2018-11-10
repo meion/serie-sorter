@@ -21,13 +21,13 @@ export default class Episode extends Component{
     getEpisodeInfo(){
         this.props.client.fetch_episode(this.props.id, this.props.season, this.props.number)
             .then(val => {
-                if(val.data){
-                    let episode = val.data[0];
+                console.log(val)
+                if(val.name){
                     this.setState({
                         ...this.state,
-                        episodeName:episode.episodeName,
-                        desc:`Episode ${this.props.number}: ${episode.overview}`,
-                        rating:episode.siteRating
+                        episodeName:val.name,
+                        desc:val.overview,
+                        rating: val.vote_average
                     })
                 }
             })
