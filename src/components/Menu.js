@@ -4,7 +4,7 @@ import SerieSummary from './SerieSummary';
 import Calendar from './Calendar';
 import './style.css';
 import Links from './Links';
-import {flatten, extractAllmkv, getContent} from '../tools/Utils';
+import {flatten, extractAllmkv, getContent, getExclusiveNames} from '../tools/Utils';
 import {TheMovieDB} from '../tools/RequestService';
 import Serie from './Serie';
 // const fs = window.require('fs');
@@ -52,11 +52,10 @@ export default class Menu extends Component{
             flatten(value[0]).then(v =>{
                 // console.log(v);
                 let parsedArray = extractAllmkv(v, this.state.dest);
-                let items = parsedArray.filter(val => val!==undefined);
-                
-                for(let item of items){
-                    this.state.client.search_for_serie(item.name).then(val => {
-                        if(val.results.length){
+                let items = getExclusiveNames(parsedArray.filter(val => val!==undefined));
+                for(let name of items){
+                    this.state.client.search_for_serie(name).then(val => {
+                        if(val){
                             let serie = val.results[0];
                             // console.log(serie)
                              let newSerie = <Serie 
@@ -64,9 +63,9 @@ export default class Menu extends Component{
                                 id={serie.id} 
                                 banner={serie.poster_path} 
                                 client={this.state.client} 
-                                key={item.name} 
-                                name={item.name} 
-                                content={getContent(items, item.name)}
+                                key={name} 
+                                name={name} 
+                                content={getContent(parsedArray, name)}
                             />
                             this.setState({
                                 series: [...this.state.series, newSerie],
