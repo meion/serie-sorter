@@ -14,9 +14,19 @@
     display: inline-block!important;
     font-size: 1em;
 }
+.calender-day-head>:first-child{
+    position: absolute;
+    right:0px;
+}
+.calender-day-head{
+    position: relative;
+}
+
 .calender-struct{
+    height: -webkit-fill-available;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: minmax(50px, max-content);
 }
 .Settings{
     opacity: 0.8;
