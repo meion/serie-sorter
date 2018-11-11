@@ -20,6 +20,7 @@
 		"react-dom": "^16.6.0",
 		"react-router-dom": "^4.3.1",
 		"setimmediate": "^1.0.5",
+		"unistore": "^3.1.0",
 		"wait-on": "^3.2.0"
 	},
 	"scripts": {

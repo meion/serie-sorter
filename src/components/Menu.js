@@ -7,10 +7,9 @@ import Links from './Links';
 import {flatten, extractAllmkv, getContent, getExclusiveNames} from '../tools/Utils';
 import RequestService from '../tools/RequestService';
 import Serie from './Serie';
+import {actions} from '../store';
+import {connect} from 'unistore/react';
 const config = window.config;
-// const fs = window.require('fs');
-// const path = require('path');
-
 
 export default class Menu extends Component{
     constructor(){
@@ -124,6 +123,10 @@ export default class Menu extends Component{
         }
     }
     render(){
+        const Default2 = connect('series', actions)(
+            ({series, addToSeries, getSeries, blah}) => {
+                return(<div>hello</div>)
+        })
         let Default = () => (
             <React.Fragment>
                 <div id="blocks">
@@ -138,6 +141,7 @@ export default class Menu extends Component{
             <React.Fragment>
                 <Links setLink={this.setLink} links={["Serie overview", "Calendar"]} />
                 <Default />
+                <Default2 />
                 {/* implement store so that we wont have to refetch. */}
                 {this.state.site === 'Calendar'? <Calendar items={this.state.items} />: <SerieSummary preloaded={this.state.serieloaded} client={this.state.client} series={this.state.series}/>}
                 {/* <SerieSummary client={this.state.client} series={this.state.series}/> */}
