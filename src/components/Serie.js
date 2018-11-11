@@ -6,7 +6,6 @@ import Setting from './Setting';
 export default class Serie extends Component{
     constructor(props){
         super(props);
-        console.log(props);
         this.state = {
             name:this.props.name,
             id:this.props.id,
@@ -27,11 +26,9 @@ export default class Serie extends Component{
             },
             tvMaze:{}
         }
-        console.log(this.state);
         this.AddSesons = this.AddSesons.bind(this);
         this.includes = this.includes.bind(this);
         this.Settings = this.Settings.bind(this);
-        this.setNewImage = this.setNewImage.bind(this);
         this.changeID = this.changeID.bind(this);
         
     }
@@ -46,11 +43,6 @@ export default class Serie extends Component{
     }
     AddSesons(content, id, name){
         let arr = []
-        if(this.state){
-            if(this.state.id === this.props.id){
-                console.log(this.state.id)
-            }
-        }
         content.forEach(element => {
             if(element === undefined) return;
             if(!this.includes(element.season, arr)){
@@ -62,41 +54,21 @@ export default class Serie extends Component{
         return arr;
     }
     changeID(id){
-        this.props.client.search_for_serie(null, id, null).then(val =>{
-            if(val[0].seriesName){
+        this.props.client.fetch_serie_by_imdbid(id).then(val =>{
+            if(val.tv_results.length){
+                let newSerie = val.tv_results[0]; // get the first result.
                 this.setState({
-                    name:val[0].seriesName,
-                    id:val[0].id,
-                    desc:val[0].overview
-                }, () => {
-                    this.setNewImage();
+                    name: newSerie.name,
+                    id:newSerie.id,
+                    desc:newSerie.overview,
+                    image:{
+                        imageURL: "https://image.tmdb.org/t/p/w500/" + newSerie.poster_path
+                    }
                 })
             }
         })
-        // window.scrollTo(0, this.state.settings.scrollPos);
         this.setState({
-            settings: {...this.state.settings, active:!this.state.settings.active, scrollPos:0}
-        })
-    }
-    setNewImage(){
-        this.props.client.fetch_images(this.state.id)
-            .then(val => {
-                // console.log(val)
-                if(val.data){
-                    let newImg = val.data[0].thumbnail;
-                    this.setState({
-                        image:{
-                            ...this.state.image,
-                            imageURL: "https://www.thetvdb.com" + newImg.replace(/_cache/g, "/banners")
-                        }
-                    })
-                }
-            })
-            .catch(err => console.log(err))
-    }
-    componentDidMount(){
-        this.setState({
-            // tvMaze: new TvMaze(this.state.name)
+            settings: {...this.state.settings, active:!this.state.settings.active}
         })
     }
     componentDidUpdate(prevProps, prevState){
@@ -112,11 +84,8 @@ export default class Serie extends Component{
         }
     }
     Settings(){
-        let scrollPos = window.scrollY;
-        console.log(scrollPos);
-        // window.scrollTo(0, 0);
         this.setState({
-            settings: {...this.state.settings, active:!this.state.settings.active, scrollPos: scrollPos}
+            settings: {...this.state.settings, active:!this.state.settings.active}
         })
     }
     render(){

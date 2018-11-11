@@ -18,6 +18,14 @@ export class TheMovieDB{
         // console.log('heelo')
         // fetch_get(this.addtoken("https://api.themoviedb.org/3/movie/550")).then(val => console.log(val)).catch(err => console.log(err))
     }
+    async fetch_serie_by_imdbid(id){
+        let url = `${this.addtoken(`https://api.themoviedb.org/3/find/${id}`)}&external_source=imdb_id`;
+        try{
+            return await fetch_get(url);
+        }catch(err){
+            console.error(err)
+        }
+    }
     async fetch_episode(id, season, episode){
         let url = `${this.addtoken(`https://api.themoviedb.org/3/tv/${id}/season/${season}/episode/${episode}`)}`
         try{

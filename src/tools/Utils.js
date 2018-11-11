@@ -218,7 +218,6 @@ export function getExclusiveNames(items){
     }).reduce((acc, curr)=>acc.includes(curr) ? acc : [...acc, curr], [])
 }
 export function getContent(items, name){
-    console.log(name, items);
     return items.filter(item => {
         if(item !== undefined) return item.name === name
         return false;

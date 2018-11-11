@@ -17,7 +17,6 @@ export default class SerieSummary extends Component{
     componentDidUpdate(prevProps, prevState){
         if(prevProps.series !== this.props.series){
             if(!this.state.activated){
-                console.log(this.state)
                 this.setState({
                     activated:true
                 }, () => this.forceUpdate())
