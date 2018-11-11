@@ -3,8 +3,8 @@ import './style.css';
 const {dialog} = window.Remote;
 
 export default class InputItem extends Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             unset: true
         }

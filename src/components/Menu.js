@@ -25,11 +25,7 @@ export default class Menu extends Component{
             serieloaded:false,
             site:"Serie Overview" // default TODO - cleaner
         };
-        if(config.has('src')){
-            this.setDir("src", [config.get('src').toString()])
-        }
         this.src = React.createRef();
-        this.setDir = this.setDir.bind(this);
         this.setDest = this.setDest.bind(this);
         this.setLink = this.setLink.bind(this);
     }
@@ -50,68 +46,6 @@ export default class Menu extends Component{
             })
         },() => console.log(this.state));
     }
-    setDir(id, value, src){
-        console.log(id, value)
-        if(id.toString() === "src"){
-            flatten(value[0]).then(v =>{
-                console.log(v);
-                if(!config.has('src')){
-                    config.set('src', src)
-                }
-                let parsedArray = extractAllmkv(v, this.state.dest);
-                let items = getExclusiveNames(parsedArray.filter(val => val!==undefined));
-                for(let name of items){
-                    this.state.client.search_for_serie(name).then(val => {
-                        if(val){
-                            let serie = val.results[0];
-                            // console.log(serie)
-                             let newSerie = <Serie 
-                                desc={serie.overview}
-                                id={serie.id} 
-                                banner={serie.poster_path} 
-                                client={this.state.client} 
-                                key={name} 
-                                name={name} 
-                                content={getContent(parsedArray, name)}
-                            />
-                            this.setState({
-                                series: [...this.state.series, newSerie].sort((a,b) => {
-                                    let A = a.props.name;
-                                    let B = b.props.name;
-                                    return A > B ? 1 : B > A ? -1 : 0;
-                                }),
-                            })
-                        }
-                    })
-                    
-                }
-            })}}
-
-
-        //         let series =  getSeries(testitems, this.state.client);
-        //         this.setState({
-        //             serieslength:series.length
-        //         })
-        //         for(let seriePromise of series){
-        //             seriePromise.then(serie =>{
-        //                 if(serie.key !== undefined){
-        //                     this.setState({
-        //                         series:[...this.state.series, serie].sort((a,b) => {
-        //                             const A = a.props.name
-        //                             const B = b.props.name
-        //                             return A > B ? 1 : B > A ? -1 : 0;
-        //                         })
-        //                     },() => console.log(this.state))
-        //                 }
-        //                 this.setState({
-        //                     loadedlength:this.state.loadedlength+1
-        //                 })
-                        
-        //             })
-        //         }
-        //     })
-        // }
-    // }
     componentDidUpdate(prevProps, prevState){
         if(this.state){
             if(this.state.loadedlength === this.state.serieslength && !this.state.done){
@@ -123,28 +57,26 @@ export default class Menu extends Component{
         }
     }
     render(){
-        const Default2 = connect('series', actions)(
-            ({series, addToSeries, getSeries, blah}) => {
-                return(<div>hello</div>)
+        const Default = connect('series', actions)(
+            ({series, client , addToSeries, getSeries, setDir , blah}) => {
+                return(
+                    <React.Fragment>
+                        <div id="blocks">
+                            <div id="src-containers">
+                                <button onClick={getSeries} />
+                                <InputItem label="Set src-folder" id="src" handleDirInfo={setDir}/>
+                                <InputItem label="Set dest-folder" id="dest" handleDirInfo={this.setDest}/>
+                            </div>
+                        </div>
+                        <SerieSummary preloaded={this.state.serieloaded} client={client} series={series}/>
+                    </React.Fragment>
+                )
         })
-        let Default = () => (
-            <React.Fragment>
-                <div id="blocks">
-                    <div id="src-containers">
-                        <InputItem label="Set src-folder" id="src" handleDirInfo={this.setDir}/>
-                        <InputItem label="Set dest-folder" id="dest" handleDirInfo={this.setDest}/>
-                    </div>
-                </div>
-            </React.Fragment>
-        )
         return(
             <React.Fragment>
                 <Links setLink={this.setLink} links={["Serie overview", "Calendar"]} />
-                <Default />
-                <Default2 />
-                {/* implement store so that we wont have to refetch. */}
-                {this.state.site === 'Calendar'? <Calendar items={this.state.items} />: <SerieSummary preloaded={this.state.serieloaded} client={this.state.client} series={this.state.series}/>}
-                {/* <SerieSummary client={this.state.client} series={this.state.series}/> */}
+                <Default/>
+                {/* {this.state.site === 'Calendar'? <Calendar items={this.state.items} />: <SerieSummary preloaded={this.state.serieloaded} client={this.state.client} series={this.state.series}/>} */}
             </React.Fragment>
         )
     }
