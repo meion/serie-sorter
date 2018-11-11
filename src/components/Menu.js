@@ -5,7 +5,7 @@ import Calendar from './Calendar';
 import './style.css';
 import Links from './Links';
 import {flatten, extractAllmkv, getContent, getExclusiveNames} from '../tools/Utils';
-import {TheMovieDB} from '../tools/RequestService';
+import RequestService from '../tools/RequestService';
 import Serie from './Serie';
 // const fs = window.require('fs');
 // const path = require('path');
@@ -21,7 +21,7 @@ export default class Menu extends Component{
             loadedlength:0,
             series:[],
             done:false,
-            client: new TheMovieDB(),
+            client: new RequestService(),
             serieloaded:false,
             site:"Serie Overview" // default TODO - cleaner
         };

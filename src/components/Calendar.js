@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import moment from 'moment';
-import {TheMovieDB} from '../tools/RequestService';
+// import {TheMovieDB} from '../tools/RequestService';
 import Serie from './Serie';
 import { getContent } from '../tools/Utils';
 export default class Calendar extends Component{
@@ -10,7 +10,7 @@ export default class Calendar extends Component{
         this.state = {
             active: false,
             series:{},
-            moviedb: new TheMovieDB()
+            // moviedb: new TheMovieDB()
         };
         this.test = this.test.bind(this);
         this.test();
