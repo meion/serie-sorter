@@ -3,6 +3,8 @@ import moment from 'moment';
 // import {TheMovieDB} from '../tools/RequestService';
 import Serie from './Serie';
 import { getContent } from '../tools/Utils';
+import actions from '../actions';
+import {connect} from 'unistore/react';
 export default class Calendar extends Component{
     constructor(props){
         super(props);
@@ -51,14 +53,26 @@ export default class Calendar extends Component{
             ...currentMonth,
             ...getRange(1, currentMonth.length % 7 - 1)
         ];
+        let Calendar = connect('seriesnames', actions)(
+            ({seriesnames}) => {
+                return(
+                    <React.Fragment>
+                        <h2>Calendar</h2>
+                        <div className="calender-struct">
+                            {range.map(val => <div className="calender-day-head"><span>{val}</span></div>)}
+                        </div>
+                    </React.Fragment>
+                )
+        })
         return(
-            <React.Fragment>
-                {this.state.active ? this.state.series : null}
-                <h2>Calendar</h2>
-                <div className="calender-struct">
-                    {range.map(val => <div className="calender-day-head"><span>{val}</span></div>)}
-                </div>
-            </React.Fragment>
+            <Calendar />
+            // <React.Fragment>
+            //     {this.state.active ? this.state.series : null}
+            //     <h2>Calendar</h2>
+            //     <div className="calender-struct">
+            //         {range.map(val => <div className="calender-day-head"><span>{val}</span></div>)}
+            //     </div>
+            // </React.Fragment>
         )
     }
 }

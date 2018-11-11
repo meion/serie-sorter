@@ -7,7 +7,8 @@ import Links from './Links';
 import {flatten, extractAllmkv, getContent, getExclusiveNames} from '../tools/Utils';
 import RequestService from '../tools/RequestService';
 import Serie from './Serie';
-import {actions} from '../store';
+// import actions from '../actions';
+import actions from '../actions'
 import {connect} from 'unistore/react';
 const config = window.config;
 
@@ -26,36 +27,36 @@ export default class Menu extends Component{
             site:"Serie Overview" // default TODO - cleaner
         };
         this.src = React.createRef();
-        this.setDest = this.setDest.bind(this);
-        this.setLink = this.setLink.bind(this);
+        // this.setDest = this.setDest.bind(this);
+        // this.setLink = this.setLink.bind(this);
     }
-    setLink(e){
-        let link = e.target.innerHTML;
-        this.setState({
-            site:link
-        })
-    }
-    setDest(id, value){
-        this.setState({
-            dest: value[0],
-            items: this.state.items.map(item=>{
-                if(item !== undefined){
-                    item.dest = value[0]
-                }
-                return item;
-            })
-        },() => console.log(this.state));
-    }
-    componentDidUpdate(prevProps, prevState){
-        if(this.state){
-            if(this.state.loadedlength === this.state.serieslength && !this.state.done){
-                this.setState({
-                    serieloaded:true,
-                    done:true
-                })
-            }
-        }
-    }
+    // setLink(e){
+    //     let link = e.target.innerHTML;
+    //     this.setState({
+    //         site:link
+    //     })
+    // }
+    // setDest(id, value){
+    //     this.setState({
+    //         dest: value[0],
+    //         items: this.state.items.map(item=>{
+    //             if(item !== undefined){
+    //                 item.dest = value[0]
+    //             }
+    //             return item;
+    //         })
+    //     },() => console.log(this.state));
+    // }
+    // componentDidUpdate(prevProps, prevState){
+    //     if(this.state){
+    //         if(this.state.loadedlength === this.state.serieslength && !this.state.done){
+    //             this.setState({
+    //                 serieloaded:true,
+    //                 done:true
+    //             })
+    //         }
+    //     }
+    // }
     render(){
         const Default = connect('series', actions)(
             ({series, client , addToSeries, getSeries, setDir , blah}) => {
