@@ -7,6 +7,7 @@ import Links from './Links';
 import {flatten, extractAllmkv, getContent, getExclusiveNames} from '../tools/Utils';
 import RequestService from '../tools/RequestService';
 import Serie from './Serie';
+const config = window.config;
 // const fs = window.require('fs');
 // const path = require('path');
 
@@ -25,6 +26,9 @@ export default class Menu extends Component{
             serieloaded:false,
             site:"Serie Overview" // default TODO - cleaner
         };
+        if(config.has('src')){
+            this.setDir("src", [config.get('src').toString()])
+        }
         this.src = React.createRef();
         this.setDir = this.setDir.bind(this);
         this.setDest = this.setDest.bind(this);
@@ -47,10 +51,14 @@ export default class Menu extends Component{
             })
         },() => console.log(this.state));
     }
-    setDir(id, value){
+    setDir(id, value, src){
+        console.log(id, value)
         if(id.toString() === "src"){
             flatten(value[0]).then(v =>{
-                // console.log(v);
+                console.log(v);
+                if(!config.has('src')){
+                    config.set('src', src)
+                }
                 let parsedArray = extractAllmkv(v, this.state.dest);
                 let items = getExclusiveNames(parsedArray.filter(val => val!==undefined));
                 for(let name of items){

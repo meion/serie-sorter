@@ -19,7 +19,7 @@ export default class InputItem extends Component{
             console.log(node.value);
             node.style.height = 40 * string.length + 'px';
             this.setState({unset:false})
-            if(this.props.handleDirInfo !== undefined && string.length > 0)this.props.handleDirInfo(node.id, string)
+            if(this.props.handleDirInfo !== undefined && string.length > 0)this.props.handleDirInfo(node.id, string, node.value)
         }
     }
     componentDidMount(){
