@@ -68,7 +68,11 @@ export default class Menu extends Component{
                                 content={getContent(parsedArray, name)}
                             />
                             this.setState({
-                                series: [...this.state.series, newSerie],
+                                series: [...this.state.series, newSerie].sort((a,b) => {
+                                    let A = a.props.name;
+                                    let B = b.props.name;
+                                    return A > B ? 1 : B > A ? -1 : 0;
+                                }),
                             })
                         }
                     })
