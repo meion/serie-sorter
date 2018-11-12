@@ -15,7 +15,7 @@ export default class Links extends Component{
         this.setState({
             prevTarget: e.target
         });
-        this.props.setLink(e);
+        // this.props.setLink(e);
     }
     render(){
         return(
