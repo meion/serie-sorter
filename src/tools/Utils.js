@@ -105,7 +105,20 @@ export function* getRange(start, end) {
         yield i;
     }
 }
-export function beutifyname(name, dest){
+export function getMovieObj(name, dest){
+    let name_reg = /(^.*\.(mkv|avi|mp4)$)/;
+    let serie_reg = /([\w(.| )]+?)(\.|\s|-)+?(S|s)([0-9]{1,})(E|e)([0-9]{1,})/;
+    let match = name_reg.exec(name);
+    let anotherMatch = serie_reg.exec(name);
+    if(match !== null && anotherMatch === null){
+        if(!match[0].toLowerCase().includes('sample')){
+            console.log(match[0])
+        }
+    }
+    // return undefined;
+
+}
+export function getSerieObj(name, dest){
     let name_reg = /([\w(.| )]+?)(\.|\s|-)+?(S|s)([0-9]{1,})(E|e)([0-9]{1,})/;
     let match = name_reg.exec(name);
     
@@ -132,10 +145,15 @@ export function flatten(src){
         return v;
     })
 }
-export function extractAllmkv(val, dest){
+/*
+val : arr,
+dest: file_loc,
+type: serie or movie
+*/
+export function extractAllmkv(val, dest, type='serie'){
     let options = ".mkv";
     let arr = get_flat(val, options);
-    arr = arr.map(val => beutifyname(val, dest));
+    arr = arr.map(val => type === 'serie' ? getSerieObj(val, dest) : getMovieObj(val, dest));
     return arr;
 }
 

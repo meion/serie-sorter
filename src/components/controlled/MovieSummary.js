@@ -4,7 +4,7 @@ import '../style.css';
 import actions from '../../actions';
 import {connect} from 'unistore/react';
 
-export default class SerieSummary extends Component{
+export default class MovieSummary extends Component{
     render(){
         let Summary = connect(['series', 'src'], actions)(
             ({series, configSetDir}) => {
@@ -15,9 +15,10 @@ export default class SerieSummary extends Component{
                 return(
                     <React.Fragment>
                         <div className="blocks src-struct">
-                            <h2 className="heading-src">Series structure</h2>
+                            <h2 className="heading-src">Movies structure</h2>
                             <div className="summary-struct">
-                                {series}
+                                <p>Movies will reside here</p>
+                                {/* {series} */}
                             </div>
                         </div>
                     </React.Fragment>

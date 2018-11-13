@@ -23,8 +23,14 @@ export default (store) => {
         }
     }
     const configSetDir = () => {
-        setDir(store.getState(), [config.get('src')])
-    } 
+        setDir(store.getState(), [config.get('src')]) // auto load series
+        setDirMovie(store.getState(), [config.get('src')]) // auto load movies
+    }
+    const setDirMovie = async function(state, srcDira){
+        let srcDir = srcDira[0];
+        let v = [];
+        //src set in sere function
+    }
     const setDir = async function(state, srcDira){
         let srcDir = srcDira[0];
         let v = [];
@@ -36,6 +42,7 @@ export default (store) => {
             console.error(err)
         }
         let mkvArr = extractAllmkv(v, "").filter(val => val !== undefined)
+        let movie = extractAllmkv(v,"","movie");
         let names = getExclusiveNames(mkvArr);
         console.log(names)
         let responses = []
