@@ -46,13 +46,10 @@ function getFilePromise(file){
         })
     })
 }
-function isCountryCode(string){
-    return string.length === 2 ? true : false;
-}
 function capitalizeFirstLetter(string) {
     let parsedString = string.split(' ').map((item) => {
         if(item !== undefined){
-            if(parseInt(item, 10) || isCountryCode(item)){
+            if(parseInt(item, 10)){
                 item = undefined   
             }else{
                 item = item.toString().charAt(0).toUpperCase() + item.slice(1)
@@ -102,6 +99,7 @@ export function* getRange(start, end) {
 export function beutifyname(name, dest){
     let name_reg = /([\w(.| )]+?)(\.|\s|-)+?(S|s)([0-9]{1,})(E|e)([0-9]{1,})/;
     let match = name_reg.exec(name);
+    
     if(match !== null){
         const obj = {
             episode :match[6],
@@ -133,16 +131,38 @@ export function extractAllmkv(val, dest){
 }
 
 export function getExclusiveNames(items){
-    return items.map(item => {
+    return removeDup(items.map(item => {
         if(item !== undefined){
             return item.name
         }
         return undefined;
-    }).reduce((acc, curr)=>acc.includes(curr) ? acc : [...acc, curr], [])
+    }))
+    // .reduce((acc, curr)=>acc.includes(curr) ? acc : [...acc, curr], [])
+}
+function removeDup(items){
+    let arr = [];
+    for(let i = 0; i < items.length; i++){
+        if(!existingValue(items[i], arr)){
+            arr.push(items[i])
+        }
+    }
+    return arr;
+}
+function existingValue(item, items){
+    let existing = false;
+    items.forEach(value => {
+        if(value.includes(item) || item.includes(value)){
+            existing = true;
+        }
+    })
+    return existing;
 }
 export function getContent(items, name){
+    if(name.includes('\'')){
+        name = name.replace(/'/g, '');
+    }
     return items.filter(item => {
-        if(item !== undefined) return item.name === name
+        if(item !== undefined) return item.name.toUpperCase() === name.toUpperCase()
         return false;
     })
 }

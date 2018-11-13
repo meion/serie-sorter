@@ -6,6 +6,9 @@ import Setting from './Setting';
 export default class Serie extends Component{
     constructor(props){
         super(props);
+        if(!this.props.content.length){
+            console.log(this.props.content, this.props.id, this.props.name);
+        }
         this.state = {
             name:this.props.name,
             id:this.props.id,
@@ -74,6 +77,7 @@ export default class Serie extends Component{
     componentDidUpdate(prevProps, prevState){
         if(this.state.id !== prevState.id){
             let obj = this.props.content.map(val => {val.name = this.state.name; return val;});
+            console.log(obj, this.state.id, this.state.name)
             this.setState({
                 seasons: this.AddSesons(obj, this.state.id, this.state.name).sort((a,b) => {
                     const A = a.props.season

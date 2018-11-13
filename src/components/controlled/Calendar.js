@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import moment from 'moment';
 // import {TheMovieDB} from '../tools/RequestService';
 // import Serie from './Serie';
-import { getRange } from '../tools/Utils';
-import actions from '../actions';
+import { getRange } from '../../tools/Utils';
+import actions from '../../actions';
 import {connect} from 'unistore/react';
 export default class Calendar extends Component{
     constructor(props){
@@ -27,6 +27,7 @@ export default class Calendar extends Component{
 
         let Calendar = connect('seriesnames', actions)(
             ({seriesnames}) => {
+                console.log(seriesnames)
                 return(
                     <React.Fragment>
                         <h2>Calendar</h2>

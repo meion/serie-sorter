@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import SerieSummary from './SerieSummary';
-import Calendar from './Calendar';
+import SerieSummary from './controlled/SerieSummary';
+import Calendar from './controlled/Calendar';
 import './style.css';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 

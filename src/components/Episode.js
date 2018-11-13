@@ -19,6 +19,7 @@ export default class Episode extends Component{
         this.getEpisodeInfo();
     }
     getEpisodeInfo(){
+        // console.log(this.props.id, this.props.season, this.props.number)
         this.props.client.fetch_episode(this.props.id, this.props.season, this.props.number)
             .then(val => {
                 if(val.name){

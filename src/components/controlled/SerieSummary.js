@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './style.css';
-import actions from '../actions';
+import '../style.css';
+// import actions from '../../actions';
+import actions from '../../actions';
 import {connect} from 'unistore/react';
 import InputItem from './InputItem';
 export default class SerieSummary extends Component{

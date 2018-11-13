@@ -5,8 +5,7 @@ const config = window.config;
 const {dialog} = window.Remote;
 
 export default (store) => {
-    const addToSeries = (v) => {
-        console.log(store)
+    const addToSeries = (v, names) => {
         store.setState({
             series: [...store.getState().series, v]
         })
@@ -20,10 +19,10 @@ export default (store) => {
             store.setState({
                 src: string.reduce((acc, curr) => acc + ',\n' + curr)
             });
-            setDir(state, "", string)
+            setDir(state, string)
         }
     }
-    const setDir = async function(state, value, srcDira){
+    const setDir = async function(state, srcDira){
         let srcDir = srcDira[0];
         let v = [];
         config.set('src', srcDir);
@@ -35,6 +34,7 @@ export default (store) => {
         }
         let mkvArr = extractAllmkv(v, "").filter(val => val !== undefined)
         let names = getExclusiveNames(mkvArr);
+        console.log(names)
         let responses = []
         for(let name of names){
             responses.push(state.client.search_for_serie(name));
@@ -42,6 +42,11 @@ export default (store) => {
         for(let resp of responses){
             resp.then(result => {
                 let serie = result.results[0];
+                names.forEach(name => {
+                    if(serie.name.includes(name)){
+                        serie.name = name;
+                    }
+                })
                 let newSerie = <Serie 
                     desc={serie.overview}
                     id={serie.id} 
@@ -51,7 +56,7 @@ export default (store) => {
                     name={serie.name} 
                     content={getContent(mkvArr, serie.name)}
                 />
-                addToSeries(newSerie)
+                addToSeries(newSerie, names)
             })
         }
     }

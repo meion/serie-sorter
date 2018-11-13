@@ -24,6 +24,7 @@ export default class RequestService{
     }
     async fetch_episode(id, season, episode){
         let url = `${this.addtoken(`https://api.themoviedb.org/3/tv/${id}/season/${season}/episode/${episode}`)}`
+        // console.log(url)
         try{
             return await fetch_get(url);
         }catch(err){
@@ -31,6 +32,7 @@ export default class RequestService{
         }
     }
     async search_for_serie(name){
+        name = name.replace(/\s/g, "+");
         let url = `${this.addtoken("https://api.themoviedb.org/3/search/tv")}&query=${name}`
         try{
             return await fetch_get(url);
