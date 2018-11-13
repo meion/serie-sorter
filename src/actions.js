@@ -19,9 +19,12 @@ export default (store) => {
             store.setState({
                 src: string.reduce((acc, curr) => acc + ',\n' + curr)
             });
-            setDir(state, string)
+        setDir(state, string)
         }
     }
+    const configSetDir = () => {
+        setDir(store.getState(), [config.get('src')])
+    } 
     const setDir = async function(state, srcDira){
         let srcDir = srcDira[0];
         let v = [];
@@ -64,6 +67,7 @@ export default (store) => {
             addToSeries,
             getSeries,
             setDir,
-            setSrc
+            setSrc,
+            configSetDir
         }
 }
