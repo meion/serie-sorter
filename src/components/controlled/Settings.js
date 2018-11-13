@@ -10,7 +10,6 @@ export default class Settings extends Component{
             ({src, setDir}) => {
                 return(
                     <React.Fragment>
-                        <h2>Settings</h2>
                         <label>Source-folder</label>
                         <InputItem label="Set src-folder" id="src" handleDirInfo={setDir}/>
                     </React.Fragment>

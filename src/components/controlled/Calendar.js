@@ -30,7 +30,6 @@ export default class Calendar extends Component{
                 console.log(seriesnames)
                 return(
                     <React.Fragment>
-                        <h2>Calendar</h2>
                         <div className="calender-struct">
                             {range.map(val => <div className="calender-day-head"><span>{val}</span></div>)}
                         </div>

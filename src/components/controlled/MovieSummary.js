@@ -15,7 +15,6 @@ export default class MovieSummary extends Component{
                 return(
                     <React.Fragment>
                         <div className="blocks src-struct">
-                            <h2 className="heading-src">Movies structure</h2>
                             <div className="summary-struct">
                                 <p>Movies will reside here</p>
                                 {/* {series} */}

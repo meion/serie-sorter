@@ -4,7 +4,7 @@ import MovieSummary from './controlled/MovieSummary';
 import Calendar from './controlled/Calendar';
 import Settings from './controlled/Settings';
 import './style.css';
-import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
+import {BrowserRouter as Router, NavLink as Link, Route} from 'react-router-dom';
 
 
 export default class Menu extends Component{
@@ -12,11 +12,11 @@ export default class Menu extends Component{
         return(
             <Router>
                     <div>
-                        <nav>
-                            <Link to="/">Series</Link>
-                            <Link to="/movies/">movies</Link>
-                            <Link to="/calendar/">Calendar</Link>
-                            <Link to="/settings/">Settings</Link>
+                        <nav className="menu-nav">
+                            <Link activeStyle={{ color: 'gray' }} exact to="/">Series</Link>
+                            <Link activeStyle={{ color: 'gray' }} to="/movies/">movies</Link>
+                            <Link activeStyle={{ color: 'gray' }} to="/calendar/">Calendar</Link>
+                            <Link activeStyle={{ color: 'gray' }} to="/settings/">Settings</Link>
                         </nav>
                         <div>
                             <Route path="/" exact component={SerieSummary} />

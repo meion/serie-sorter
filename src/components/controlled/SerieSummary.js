@@ -15,7 +15,6 @@ export default class SerieSummary extends Component{
                 return(
                     <React.Fragment>
                         <div className="blocks src-struct">
-                            <h2 className="heading-src">Series structure</h2>
                             <div className="summary-struct">
                                 {series}
                             </div>
