@@ -5,8 +5,6 @@ export async function fetch_get(url) {
     if (response.ok) return await response.json()
     throw new Error(response.status)
   }
-
-
 export default class RequestService{
     constructor(){
         this.state = {
@@ -33,6 +31,22 @@ export default class RequestService{
     async search_for_serie(name){
         name = name.replace(/\s/g, "+");
         let url = `${this.addtoken("https://api.themoviedb.org/3/search/tv")}&query=${name}`
+        try{
+            return await fetch_get(url);
+        }catch(err){
+            console.log(err)
+        }
+    }
+    async search_for_movie(name){
+        // console.log(name.name)
+        // FIX REGEXP FOR NOW =>
+        name = name.name.split(" ").filter(val => {
+            let parsed = parseInt(val, 10);
+            if(isNaN(parsed)) return true;
+            return false;
+
+        }).reduce((acc, curr) => acc+' '+curr);
+        let url = `${this.addtoken("https://api.themoviedb.org/3/search/movie")}&query=${name}`
         try{
             return await fetch_get(url);
         }catch(err){

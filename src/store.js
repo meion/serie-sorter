@@ -4,6 +4,7 @@ const config = window.config;
 
 export default createStore({
     series:[],
+    movies:[],
     serienames:[],
     src: config.has('src') ? config.get('src') : "set src-folder",
     client: new RequestService()

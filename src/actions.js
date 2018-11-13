@@ -1,5 +1,6 @@
 import React from 'react';
 import Serie from './components/Serie';
+import Movie from './components/Movie';
 import {flatten, getExclusiveNames, extractAllmkv, getContent} from './tools/Utils'
 const config = window.config;
 const {dialog} = window.Remote;
@@ -8,6 +9,11 @@ export default (store) => {
     const addToSeries = (v, names) => {
         store.setState({
             series: [...store.getState().series, v]
+        })
+    }
+    const addToMovies = (v, names) => {
+        store.setState({
+            movies: [...store.getState().movies, v]
         })
     }
     const getSeries = (state) => {
@@ -31,6 +37,28 @@ export default (store) => {
         let v = [];
         //src set in sere function
     }
+    const constructMovies = async function(movies){
+        let state = store.getState();
+        let respones = [];
+        console.log(movies)
+        for(let name of movies){
+            respones.push(state.client.search_for_movie(name))
+        }
+        for(let resp of respones){
+            resp.then(val => {
+                if(val.total_results > 0){
+                    let obj = val.results[0];
+                    console.log(obj.original_title)
+                    let newMovie = <Movie
+                        name={obj.original_title}
+                        id={obj.id}
+                        desc={obj.overview}
+                        banner={obj.poster_path} />
+                    addToMovies(newMovie)
+                }
+            })
+        }
+    }
     const setDir = async function(state, srcDira){
         let srcDir = srcDira[0];
         let v = [];
@@ -42,7 +70,8 @@ export default (store) => {
             console.error(err)
         }
         let mkvArr = extractAllmkv(v, "").filter(val => val !== undefined)
-        let movie = extractAllmkv(v,"","movie");
+        let movies = extractAllmkv(v,"","movie").filter(val => val.name.length > 0);
+        constructMovies(movies);
         let names = getExclusiveNames(mkvArr);
         console.log(names)
         let responses = []
@@ -51,27 +80,30 @@ export default (store) => {
         }
         for(let resp of responses){
             resp.then(result => {
-                let serie = result.results[0];
-                names.forEach(name => {
-                    if(serie.name.includes(name)){
-                        serie.name = name;
-                    }
-                })
-                let newSerie = <Serie 
-                    desc={serie.overview}
-                    id={serie.id} 
-                    banner={serie.poster_path} 
-                    client={state.client} 
-                    key={serie.name} 
-                    name={serie.name} 
-                    content={getContent(mkvArr, serie.name)}
-                />
-                addToSeries(newSerie, names)
+                if(result !== undefined){
+                    let serie = result.results[0];
+                    names.forEach(name => {
+                        if(serie.name.includes(name)){
+                            serie.name = name;
+                        }
+                    })
+                    let newSerie = <Serie 
+                        desc={serie.overview}
+                        id={serie.id} 
+                        banner={serie.poster_path} 
+                        client={state.client} 
+                        key={serie.name} 
+                        name={serie.name} 
+                        content={getContent(mkvArr, serie.name)}
+                    />
+                    addToSeries(newSerie, names)
+                }
             })
         }
     }
         return{
             addToSeries,
+            addToMovies,
             getSeries,
             setDir,
             setSrc,

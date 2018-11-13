@@ -6,18 +6,13 @@ import {connect} from 'unistore/react';
 
 export default class MovieSummary extends Component{
     render(){
-        let Summary = connect(['series', 'src'], actions)(
-            ({series, configSetDir}) => {
-                if(!series.length){
-                    // If we dont have any series loaded, check if we can load a source folder from the config-json.
-                    configSetDir();
-                }
+        let Summary = connect(['movies', 'src'], actions)(
+            ({movies}) => {
                 return(
                     <React.Fragment>
                         <div className="blocks src-struct">
                             <div className="summary-struct">
-                                <p>Movies will reside here</p>
-                                {/* {series} */}
+                                {movies}
                             </div>
                         </div>
                     </React.Fragment>
