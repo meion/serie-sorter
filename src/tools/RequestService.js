@@ -24,7 +24,6 @@ export default class RequestService{
     }
     async fetch_episode(id, season, episode){
         let url = `${this.addtoken(`https://api.themoviedb.org/3/tv/${id}/season/${season}/episode/${episode}`)}`
-        // console.log(url)
         try{
             return await fetch_get(url);
         }catch(err){

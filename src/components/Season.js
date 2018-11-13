@@ -5,8 +5,6 @@ import Episode from './Episode';
 export default class Season extends Component{
     constructor(props){
         super(props);
-        // season is a string
-        // console.log(props);
         this.state = {
             name: this.props.name,
             season: this.props.season,

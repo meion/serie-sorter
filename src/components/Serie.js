@@ -6,9 +6,6 @@ import Setting from './Setting';
 export default class Serie extends Component{
     constructor(props){
         super(props);
-        if(!this.props.content.length){
-            console.log(this.props.content, this.props.id, this.props.name);
-        }
         this.state = {
             name:this.props.name,
             id:this.props.id,

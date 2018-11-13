@@ -46,7 +46,7 @@ function getFilePromise(file){
         })
     })
 }
-function capitalizeFirstLetter(string) {
+export function capitalizeFirstLetter(string) {
     let parsedString = string.split(' ').map((item) => {
         if(item !== undefined){
             if(parseInt(item, 10)){
@@ -64,12 +64,21 @@ function capitalizeFirstLetter(string) {
     });
 }
 export function getEpisodes(name, season, content){
-    return content.map((episode) =>{
-        if(season === episode.season && name === episode.name){
+    name = capitalizeFirstLetter(name).replace(/\./g, " ").replace(/'/g, "").trim();
+    let arr = content.map((episode) =>{
+        if(season === episode.season && episode.name.includes(name)){
             return episode;
         }
         return undefined;
     })
+    arr = arr.filter(v => v!==undefined)
+    if(!arr.length){
+        console.log(name, season, content)
+        if(name === "Rick and Morty"){
+            console.log(name, season, content)
+        }
+    }
+    return arr;
 }
 export function getSeries(items, client){
         let names = getExclusiveNames(items).filter(name => name!==undefined);
@@ -158,11 +167,12 @@ function existingValue(item, items){
     return existing;
 }
 export function getContent(items, name){
+    name = name.replace(/\./g, " ").replace(/\(|\)/g, "").trim()
     if(name.includes('\'')){
         name = name.replace(/'/g, '');
     }
     return items.filter(item => {
-        if(item !== undefined) return item.name.toUpperCase() === name.toUpperCase()
+        if(item !== undefined) return item.name.toUpperCase().includes(name.toUpperCase())
         return false;
     })
 }
