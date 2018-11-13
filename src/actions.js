@@ -2,6 +2,7 @@ import React from 'react';
 import Serie from './components/Serie';
 import {flatten, getExclusiveNames, extractAllmkv, getContent} from './tools/Utils'
 const config = window.config;
+const {dialog} = window.Remote;
 
 export default (store) => {
     const addToSeries = (v) => {
@@ -13,10 +14,20 @@ export default (store) => {
     const getSeries = (state) => {
         return state.series;
     }
+    const setSrc = (state) => {
+        var string = dialog.showOpenDialog({properties: ['multiSelections', 'openDirectory']}) || "";
+        if(string.length > 0){
+            store.setState({
+                src: string.reduce((acc, curr) => acc + ',\n' + curr)
+            });
+            setDir(state, "", string)
+        }
+    }
     const setDir = async function(state, value, srcDira){
         let srcDir = srcDira[0];
         let v = [];
         config.set('src', srcDir);
+        // setSrc(srcDir);
         try{
             v = await flatten(srcDir);
         }catch(err){
@@ -47,6 +58,7 @@ export default (store) => {
         return{
             addToSeries,
             getSeries,
-            setDir
+            setDir,
+            setSrc
         }
 }

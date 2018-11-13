@@ -11,7 +11,7 @@ export default class SerieSummary extends Component{
                     <React.Fragment>
                         <div className="blocks src-struct">
                             <InputItem label="Set src-folder" id="src" handleDirInfo={setDir}/>
-                            <InputItem label="Set dest-folder" id="dest" handleDirInfo={this.setDest}/>
+                            {/* <InputItem label="Set dest-folder" id="dest" handleDirInfo={this.setDest}/> */}
                             <h2 className="heading-src">Series structure</h2>
                             <div className="summary-struct">
                                 {series}

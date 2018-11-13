@@ -94,6 +94,11 @@ export function getSeries(items, client){
         }
         return arr;
     }
+export function* getRange(start, end) {
+    for (let i = start; i <= end; i++) {
+        yield i;
+    }
+}
 export function beutifyname(name, dest){
     let name_reg = /([\w(.| )]+?)(\.|\s|-)+?(S|s)([0-9]{1,})(E|e)([0-9]{1,})/;
     let match = name_reg.exec(name);

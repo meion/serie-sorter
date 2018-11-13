@@ -8,6 +8,6 @@ import RequestService from './tools/RequestService';
 export default createStore({
     series:[],
     serienames:[],
-    src:"",
+    src:"Set src-folder",
     client: new RequestService()
   });
