@@ -21,7 +21,15 @@
 .calender-day-head{
     position: relative;
 }
-
+.setting-question{
+    display: flex;
+}
+.setting-question-label{
+    margin-right: 10px;
+    text-align: left;
+    min-width: 20%;
+    padding-left: 2%;
+}
 .calender-struct{
     height: -webkit-fill-available;
     display: grid;

@@ -15,8 +15,6 @@ export default class Question extends Component{
                         <div>
                             <input type="radio" id={this.props.setting+"" + 1} name={this.props.setting} value="Yes"/>
                             <label for={this.props.key + 1}>Yes</label>
-                        </div>
-                        <div>
                             <input type="radio" id={this.props.setting +""+  2} name={this.props.setting} value="No" 
                             checked/>
                             <label for={this.props.key + 2}>No</label>
@@ -32,8 +30,8 @@ export default class Question extends Component{
         let InputItem = connect('src', actions)(
             ({src, setSrc}) => {
                 return(
-                    <div>
-                        <label>{this.props.label}</label>
+                    <div className="setting-question">
+                        <label className="setting-question-label">{this.props.label}</label>
                         {this.getCorrectInput(this.props.type)}
                     </div>
                 )
