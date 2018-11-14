@@ -8,11 +8,11 @@ export default class InputItem extends Component{
         let InputItem = connect('src', actions)(
             ({src, setSrc}) => {
                 return(
-                    <React.Fragment>
+                    <div>
                         <button onClick={setSrc}>
                             <textarea value={src} disabled/>
                         </button>
-                    </React.Fragment>
+                    </div>
                 )
             })
         return(

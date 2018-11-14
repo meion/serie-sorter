@@ -14,7 +14,7 @@ export default class Menu extends Component{
                     <div>
                         <nav className="menu-nav">
                             <Link activeStyle={{ color: 'gray' }} exact to="/">Series</Link>
-                            <Link activeStyle={{ color: 'gray' }} to="/movies/">movies</Link>
+                            <Link activeStyle={{ color: 'gray' }} to="/movies/">Movies</Link>
                             <Link activeStyle={{ color: 'gray' }} to="/calendar/">Calendar</Link>
                             <Link activeStyle={{ color: 'gray' }} to="/settings/">Settings</Link>
                         </nav>
