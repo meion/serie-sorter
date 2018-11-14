@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../style.css';
 import {connect} from 'unistore/react';
 import actions from '../../actions';
-import InputItem from './InputItem';
 import Question from './Question';
 
 export default class Settings extends Component{
@@ -11,7 +10,8 @@ export default class Settings extends Component{
             ({src, setDir}) => {
                 return(
                     <React.Fragment>
-                        <InputItem label="Set src-folder" id="src" handleDirInfo={setDir}/>
+                        {/* <InputItem label="Set src-folder" id="src" handleDirInfo={setDir}/> */}
+                        <Question setting="src_folder" label="Set sourcefolder" type="textarea"/>
                         <h2>General Settings</h2>
                         <Question setting="show_all_from_series" label="Show all episodes for each Serie?" type="radio"/>
                         <Question setting="cache_for_offline" label="Store serie/movie information locally?" type="radio"/>

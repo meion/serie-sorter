@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import moment from 'moment';
 // import {TheMovieDB} from '../tools/RequestService';
 // import Serie from './Serie';
-import { getRange } from '../../tools/Utils';
+import { getRange, generateUUID } from '../../tools/Utils';
 import actions from '../../actions';
 import {connect} from 'unistore/react';
 
@@ -32,7 +32,7 @@ export default class Calendar extends Component{
                 return(
                     <React.Fragment>
                         <div className="calender-struct">
-                            {range.map(val => <div className="calender-day-head"><span>{val}</span></div>)}
+                            {range.map((val, index) => <div key={generateUUID()} className="calender-day-head"><span key={generateUUID()}>{val}</span></div>)}
                         </div>
                     </React.Fragment>
                 )

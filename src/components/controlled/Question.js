@@ -14,20 +14,34 @@ export default class Question extends Component{
                     <React.Fragment>
                         <div>
                             <input type="radio" id={this.props.setting+"" + 1} name={this.props.setting} value="Yes"/>
-                            <label for={this.props.key + 1}>Yes</label>
+                            <label htmlFor={this.props.key +""+ 1}>Yes</label>
                             <input type="radio" id={this.props.setting +""+  2} name={this.props.setting} value="No" 
-                            checked/>
-                            <label for={this.props.key + 2}>No</label>
+                            defaultChecked/>
+                            <label htmlFor={this.props.key +""+ 2}>No</label>
                         </div>
                     </React.Fragment>
                 );
+            case 'textarea':
+                    let TextArea = connect('src', actions)(
+                        ({src, setSrc}) => {
+                            return(
+                                <React.Fragment>
+                                    <button onClick={setSrc}>
+                                        <textarea value={src} disabled/>
+                                    </button>
+                                </React.Fragment>
+                            )
+                        })
+                    return(
+                        <TextArea />
+                    )
             default:
                     return;
 
         }
     }
     render(){
-        let InputItem = connect('src', actions)(
+        let Question = connect('src', actions)(
             ({src, setSrc}) => {
                 return(
                     <div className="setting-question">
@@ -37,7 +51,7 @@ export default class Question extends Component{
                 )
             })
         return(
-            <InputItem/>
+            <Question/>
         )
     }
 }

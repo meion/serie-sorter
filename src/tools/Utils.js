@@ -105,6 +105,12 @@ export function* getRange(start, end) {
         yield i;
     }
 }
+export function generateUUID(){
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+}
 export function getMovieObj(name, dest){
     name = name.split('/');
     name = name[name.length - 1];

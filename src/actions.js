@@ -11,6 +11,12 @@ export default (store) => {
             series: [...store.getState().series, v]
         })
     }
+    const changeSettings = (v, name) => {
+        // TODO - init settings state
+        store.setState({
+          [name] : v  
+        })
+    }
     const addToMovies = (v, names) => {
         store.setState({
             movies: [...store.getState().movies, v]
@@ -51,6 +57,7 @@ export default (store) => {
                     console.log(obj.original_title)
                     let newMovie = <Movie
                         name={obj.original_title}
+                        key={obj.original_title}
                         id={obj.id}
                         desc={obj.overview}
                         banner={obj.poster_path} />
