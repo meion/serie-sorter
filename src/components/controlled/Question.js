@@ -10,17 +10,21 @@ export default class Question extends Component{
     getCorrectInput(type){
         switch(type){
             case 'radio':
-                return(
-                    <React.Fragment>
-                        <div>
-                            <input type="radio" id={this.props.setting+"" + 1} name={this.props.setting} value="Yes"/>
-                            <label htmlFor={this.props.key +""+ 1}>Yes</label>
-                            <input type="radio" id={this.props.setting +""+  2} name={this.props.setting} value="No" 
-                            defaultChecked/>
-                            <label htmlFor={this.props.key +""+ 2}>No</label>
-                        </div>
-                    </React.Fragment>
-                );
+                let Radio = connect('settings', actions)(
+                    ({settings, changeSetting}) => {
+                        return(
+                            <React.Fragment>
+                                <div>
+                                    <input type="radio" id={this.props.setting+"" + 1} onChange={(e) => changeSetting(this.props.setting, e)} name={this.props.setting} value="Yes"/>
+                                    <label htmlFor={this.props.key +""+ 1}>Yes</label>
+                                    <input type="radio" id={this.props.setting +""+  2} onChange={(e) => changeSetting(this.props.setting, e)} name={this.props.setting} value="No" 
+                                    defaultChecked/>
+                                    <label htmlFor={this.props.key +""+ 2}>No</label>
+                                </div>
+                            </React.Fragment>
+                        )
+                    })
+                return(<Radio />)
             case 'textarea':
                     let TextArea = connect('src', actions)(
                         ({src, setSrc}) => {
