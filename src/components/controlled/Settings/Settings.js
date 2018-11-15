@@ -7,6 +7,8 @@ import GeneralSettings from './Routes/GeneralSettings';
 import UserSettings from './Routes/UserSettings';
 import MovieSerieSettings from './Routes/MovieSerieSettings';
 import {BrowserRouter as Router, NavLink as Link, Route} from 'react-router-dom';
+import NetworkSettings from './Routes/NetworkSettings';
+import IntegrationSettings from './Routes/IntegrationSettings';
 
 export default class Settings extends Component{
     render(){
@@ -19,6 +21,8 @@ export default class Settings extends Component{
                                 <Link activeStyle={{ color: 'gray' }} exact to="/settings/">General<br/> Settings</Link>
                                 <Link activeStyle={{ color: 'gray' }} to="/settings/user/">User <br/>Settings</Link>
                                 <Link activeStyle={{ color: 'gray' }} to="/settings/serie_movie/">Serie/Movie <br/>Settings</Link>
+                                <Link activeStyle={{ color: 'gray' }} to="/settings/network/">Network <br/>Settings</Link>
+                                <Link activeStyle={{ color: 'gray' }} to="/settings/integration/">Integration <br/>Settings</Link>
                                 {/* <Link activeStyle={{ color: 'gray' }} to="/calendar/">Calendar</Link>
                                 <Link activeStyle={{ color: 'gray' }} to="/settings/">Settings</Link>  */}
                             </nav>
@@ -26,6 +30,8 @@ export default class Settings extends Component{
                                 <Route path="/settings/" exact component={GeneralSettings} />
                                 <Route path="/settings/user/" component={UserSettings} />
                                 <Route path="/settings/serie_movie/" component={MovieSerieSettings} />
+                                <Route path="/settings/network/" component={NetworkSettings} />
+                                <Route path="/settings/integration/" component={IntegrationSettings} />
                                 {/*<Route path="/settings/" component={Settings} />
                                 <Route path="/movies/" component={MovieSummary} /> */}
                             </div>

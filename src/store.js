@@ -14,7 +14,7 @@ export default createStore({
       manual_import_route_active:false,
       deactivate_series_route:false,
       deactivate_movies_route:false,
-      deactivate_calendar_route:false,
+      deactivate_calendar_route:true,
       activate_services:false,
       activate_unfound_sources:false,
       throttle_requests:false
