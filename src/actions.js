@@ -11,13 +11,16 @@ export default (store) => {
             series: [...store.getState().series, v]
         })
     }
-    const changeSetting = ({settings},v, e) => {
+    const changeSetting = ({settings},name, e) => {
         // TODO - init settings state
-        console.log(v, e.target.value)
         store.setState({
-            ...settings,
-            [name] : v  
+            settings: {
+                ...settings,
+                [name]:e.target.value
+            }
         })
+        
+        console.log(store.getState().settings)
     }
     const addToMovies = (v, names) => {
         store.setState({
