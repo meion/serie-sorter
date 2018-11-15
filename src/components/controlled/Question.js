@@ -37,6 +37,12 @@ export default class Question extends Component{
                     return(
                         <TextArea />
                     )
+            case 'text':
+                    return(
+                        <div>
+                            <input id={this.props.setting} type="text"></input>
+                        </div>
+                    )
             default:
                     return;
 

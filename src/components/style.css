@@ -3,6 +3,10 @@
     --text-area-height: 40px;
     --text-area-width: 15%;
 }
+.App{
+    background: black;
+    color:white!important;
+}
 .serie-desc-head:hover{
     color: gray
 }
@@ -32,6 +36,9 @@
 .left-menu-nav .menu-nav{
     display: flex;
     flex-flow:column;
+}
+.left-menu-nav .menu-nav a{
+    color:white;
 }
 .radio-question{
     display: flex;
@@ -156,10 +163,11 @@
 .menu-nav{
     display: flex;
     justify-content: space-evenly;
+    /* background: black;   */
 }
 .menu-nav a{
     text-decoration: none;
-    color: black;
+    color: white;
     font-weight: bold;
 }
 .serie-desc-head:hover .serie-desc, .episode-desc-head:hover .episode-desc, .settings-help-head:hover .settings-help{
