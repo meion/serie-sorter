@@ -5,6 +5,7 @@ import actions from '../../../actions';
 import Question from '../Question';
 import GeneralSettings from './Routes/GeneralSettings';
 import UserSettings from './Routes/UserSettings';
+import MovieSerieSettings from './Routes/MovieSerieSettings';
 import {BrowserRouter as Router, NavLink as Link, Route} from 'react-router-dom';
 
 export default class Settings extends Component{
@@ -17,12 +18,14 @@ export default class Settings extends Component{
                             <nav className="menu-nav">
                                 <Link activeStyle={{ color: 'gray' }} exact to="/settings/">General<br/> Settings</Link>
                                 <Link activeStyle={{ color: 'gray' }} to="/settings/user/">User <br/>Settings</Link>
+                                <Link activeStyle={{ color: 'gray' }} to="/settings/serie_movie/">Serie/Movie <br/>Settings</Link>
                                 {/* <Link activeStyle={{ color: 'gray' }} to="/calendar/">Calendar</Link>
                                 <Link activeStyle={{ color: 'gray' }} to="/settings/">Settings</Link>  */}
                             </nav>
                             <div className="settings-route">
                                 <Route path="/settings/" exact component={GeneralSettings} />
                                 <Route path="/settings/user/" component={UserSettings} />
+                                <Route path="/settings/serie_movie/" component={MovieSerieSettings} />
                                 {/*<Route path="/settings/" component={Settings} />
                                 <Route path="/movies/" component={MovieSummary} /> */}
                             </div>

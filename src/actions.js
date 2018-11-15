@@ -13,16 +13,12 @@ export default (store) => {
     }
     const changeSetting = ({settings},name, e) => {
         // TODO - init settings state
-        console.log(e.target)
-        e.target.checked = true;
         store.setState({
             settings: {
                 ...settings,
                 [name]:e.target.value === 'false' ? false : true
             }
         })
-        
-        console.log(store.getState().settings)
     }
     const addToMovies = (v, names) => {
         store.setState({
