@@ -21,14 +21,31 @@
 .calender-day-head{
     position: relative;
 }
+.left-menu-nav{
+    display:flex;
+    padding-top: 2%;
+    height: -webkit-fill-available;
+}
+.settings-route{
+    width: 100%;
+}
+.left-menu-nav .menu-nav{
+    display: flex;
+    flex-flow:column;
+}
+.radio-question{
+    display: flex;
+}
 .setting-question{
     display: flex;
+    justify-content: space-between;
+    max-width: 70%;
 }
 .setting-question-label{
     margin-right: 10px;
     text-align: left;
-    min-width: 20%;
     padding-left: 2%;
+    white-space: nowrap;
 }
 .calender-struct{
     height: -webkit-fill-available;

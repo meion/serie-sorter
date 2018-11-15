@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SerieSummary from './controlled/SerieSummary';
 import MovieSummary from './controlled/MovieSummary';
 import Calendar from './controlled/Calendar';
-import Settings from './controlled/Settings';
+import Settings from './controlled/Settings/Settings';
 import './style.css';
 import {BrowserRouter as Router, NavLink as Link, Route} from 'react-router-dom';
 
