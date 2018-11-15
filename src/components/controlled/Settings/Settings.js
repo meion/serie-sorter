@@ -15,8 +15,8 @@ export default class Settings extends Component{
                     <Router>
                         <div className="left-menu-nav">
                             <nav className="menu-nav">
-                                <Link activeStyle={{ color: 'gray' }} exact to="/settings/">General Settings</Link>
-                                <Link activeStyle={{ color: 'gray' }} to="/settings/user/">User Settings</Link>
+                                <Link activeStyle={{ color: 'gray' }} exact to="/settings/">General<br/> Settings</Link>
+                                <Link activeStyle={{ color: 'gray' }} to="/settings/user/">User <br/>Settings</Link>
                                 {/* <Link activeStyle={{ color: 'gray' }} to="/calendar/">Calendar</Link>
                                 <Link activeStyle={{ color: 'gray' }} to="/settings/">Settings</Link>  */}
                             </nav>

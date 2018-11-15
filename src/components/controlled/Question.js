@@ -14,10 +14,11 @@ export default class Question extends Component{
                     ({settings, changeSetting}) => {
                         return(
                             <div className="radio-question">
-                                <input type="radio" id={this.props.setting+"" + 1} onChange={(e) => changeSetting(this.props.setting, e)} name={this.props.setting} value={true}/>
+                                <input type="radio" id={this.props.setting+"" + 1} onChange={(e) => changeSetting(this.props.setting, e)} name={this.props.setting} value={true}
+                                checked={settings[this.props.setting] === true}/>
                                 <label htmlFor={this.props.key +""+ 1}>Yes</label>
                                 <input type="radio" id={this.props.setting +""+  2} onChange={(e) => changeSetting(this.props.setting, e)} name={this.props.setting} value={false} 
-                                defaultChecked/>
+                                checked={settings[this.props.setting] === false}/>
                                 <label htmlFor={this.props.key +""+ 2}>No</label>
                             </div>
                         )

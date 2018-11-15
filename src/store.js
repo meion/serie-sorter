@@ -7,17 +7,17 @@ export default createStore({
     movies:[],
     serienames:[],
     settings:{
-      show_all_from_series:"",
-      cache_for_offline:"",
-      remove_trash_files:"",
-      run_file_drone:"",
-      manual_import_route_active:"",
-      deactivate_series_route:"",
-      deactivate_movies_route:"",
-      deactivate_calendar_route:"",
-      activate_services:"",
-      activate_unfound_sources:"",
-      throttle_requests:""
+      show_all_from_series:false,
+      cache_for_offline:false,
+      remove_trash_files:false,
+      run_file_drone:false,
+      manual_import_route_active:false,
+      deactivate_series_route:false,
+      deactivate_movies_route:false,
+      deactivate_calendar_route:false,
+      activate_services:false,
+      activate_unfound_sources:false,
+      throttle_requests:false
     },
     src: config.has('src') ? config.get('src') : "set src-folder",
     client: new RequestService()
